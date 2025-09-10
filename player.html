@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Netflix - Player</title>
+    <link rel="stylesheet" href="style-player.css">
+    <link rel="shortcut icon" href="img/netflix_logo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+
+    <header class="player-header">
+        <a href="index.html" class="voltar-btn">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="player-titulo">Meu Vídeo Especial</h1>
+    </header>
+
+    <div class="video-container">
+        <video id="video-player" autoplay controls>
+            <source src="video/meu-video.mp4" type="video/mp4">
+            Seu navegador não suporta o formato de vídeo.
+        </video>
+    </div>
+
+    <div class="loading-spinner"></div>
+
+    <script>
+        const body = document.body;
+        const playerHeader = document.querySelector('.player-header');
+        const videoPlayer = document.getElementById('video-player');
+        const loadingSpinner = document.querySelector('.loading-spinner');
+        let hideTimeout;
+
+        function hideUI() {
+            body.classList.add('hide-ui');
+        }
+
+        function showUI() {
+            clearTimeout(hideTimeout);
+            body.classList.remove('hide-ui');
+            hideTimeout = setTimeout(hideUI, 3000); // Esconde a interface depois de 3 segundos
+        }
+
+        // Mostra a interface ao mover o mouse ou tocar na tela
+        body.addEventListener('mousemove', showUI);
+        body.addEventListener('touchstart', showUI);
+        
+        // INICIALMENTE, MOSTRE A INTERFACE E INICIE O TEMPORIZADOR PARA ESCONDÊ-LA
+        showUI();
+
+        // Controla o spinner de carregamento
+        videoPlayer.addEventListener('waiting', () => {
+            loadingSpinner.style.display = 'block';
+        });
+
+        videoPlayer.addEventListener('playing', () => {
+            loadingSpinner.style.display = 'none';
+        });
+
+    </script>
+
+</body>
+</html>

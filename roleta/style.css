@@ -1,0 +1,111 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    margin: 0;
+    color: #fff;
+}
+
+h1 {
+    color: white;
+    text-shadow: 
+        0 0 5px red,
+        0 0 10px red,
+        0 0 15px red;
+    font-size: 48px;
+    text-align: center; /* centraliza horizontalmente */
+    line-height: 1.2;   /* ajusta o espaçamento entre as linhas se quebrar */
+    margin: 0 0 20px 0;  /* margem inferior para separar da roleta */
+}
+
+
+.roleta-container {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+#roleta {
+    border-radius: 50%;
+    box-shadow: 0 0 20px 3px #ff0000, 0 0 40px 6px #ff0000 inset;
+    transition: box-shadow 0.3s;
+}
+
+.ponteiro {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 60px;
+    color: black;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, darkred, red, crimson, darkred);
+    background-size: 300% 300%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px red;
+    animation: gradientAnim 5s ease infinite;
+}
+
+button:hover {
+    box-shadow: 0 0 20px red, 0 0 40px red inset;
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 15px red, 0 0 30px red inset;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes gradientAnim {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+#resultado-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.8);
+    border: 2px solid red;
+    border-radius: 15px;
+    padding: 20px 30px;
+    text-align: center;
+    min-width: 200px;
+    max-width: 300px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000 inset;
+    z-index: 100;
+}
+
+#resultado-titulo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#resultado-info {
+    font-size: 14px;
+    color: #fff;
+}

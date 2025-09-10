@@ -1,0 +1,29 @@
+Roleta com 12 opções para brincar juntos
+
+“Você é maravilhosa 😍” – um elogio fofo para ela se sentir especial.
+
+“Abraço virtual 🤗” – imaginem o abraço mesmo à distância.
+
+“Me conte um segredo 💌” – algo divertido ou curioso para aproximar vocês.
+
+“Sorriso contagiante 😄” – ela envia um sorriso em foto, gif ou emoji.
+
+“Escolha meu próximo desafio 😏” – ela decide algo que você fará, leve e divertido.
+
+“Mensagem surpresa 💌” – você envia algo carinhoso e inesperado.
+
+“Momento música 🎵” – ela escolhe uma música que vocês gostam ou que lembre vocês.
+
+“Diga algo fofo para mim 😘” – pequena provocação romântica e divertida.
+
+“Gif fofo 🐶” – envio de gif engraçado ou fofo entre vocês.
+
+“Piada só para você 😂” – você conta uma piada só para ela rir.
+
+“Desafio emoji 🎭” – ela envia um emoji que representa o que está sentindo agora.
+
+“Momento sinceridade 🥰” – uma pergunta e resposta leve para se conhecerem ainda mais.
+
+
+
+ficou com assim, mas quero a roleta com menos cores, pode fazer ela em dois tons de vermelho alternando. E pode criar o front-end da roleta, pfv crie um arquivo para cada código, um para html, um para css e um para js, eu prefiro usar essa estrutura nos meus projetos e se tiver arquivos como imagem,musica ou video que o arquivo seja direcionado de pastas, pasta img para imagem, pasta audio para musicas e pasta video para videos

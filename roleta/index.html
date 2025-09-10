@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roleta</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Roleta Divertida 🎡</h1>
+
+<div class="roleta-container">
+  <canvas id="roleta" width="400" height="400"></canvas>
+  <div class="ponteiro">▼</div>
+</div>
+
+<button id="girar">Girar Roleta</button>
+
+<!-- Container central para resultado -->
+<div id="resultado-container">
+    <div id="resultado-titulo"></div>
+    <div id="resultado-info"></div>
+</div>
+
+<!-- Áudio da roleta girando -->
+<audio id="som-roleta" src="audio/click.mp3"></audio>
+
+<!-- Áudio do resultado -->
+<audio id="som-fim" src="audio/fim.mp3"></audio>
+
+<script src="roleta.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+@keyframes estrelas-movimento {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-2000px); }
+}
+
+.estrelas-fundo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: -1;
+}
+
+/* Camada 1 de estrelas */
+.estrelas-fundo::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2000px;
+    background: transparent url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="15" cy="15" r="0.5" /><circle cx="85" cy="85" r="0.8" /><circle cx="50" cy="50" r="1.2" /><circle cx="70" cy="20" r="0.7" /><circle cx="30" cy="80" r="0.6" /></svg>') repeat;
+    background-size: 100px 100px;
+    animation: estrelas-movimento 200s linear infinite;
+}
+
+/* Camada 2 de estrelas (mais distantes) */
+.estrelas-fundo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2000px;
+    background: transparent url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="white"><circle cx="25" cy="25" r="0.3" /><circle cx="75" cy="75" r="0.5" /><circle cx="10" cy="90" r="0.4" /><circle cx="95" cy="10" r="0.6" /></svg>') repeat;
+    background-size: 200px 200px;
+    animation: estrelas-movimento 250s linear infinite;
+}
+
+/* Animação do botão e Efeitos */
+@keyframes button-pulse-final {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+}
+
+@keyframes button-explode-final {
+    0% { transform: scale(1); }
+    100% { transform: scale(100); opacity: 0; }
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    text-align: center;
+}
+
+.container-intro {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#start-button {
+    background: #e50914;
+    color: #fff;
+    border: none;
+    padding: 18px 45px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 50px;
+    animation: button-pulse-final 2s infinite;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+#start-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#start-button:hover::before {
+    opacity: 1;
+}
+
+#start-button.animate {
+    animation: none;
+    background: #b80710;
+}
+
+#start-button.animate::before {
+    opacity: 0;
+}
+
+#start-button.animate-explode {
+    animation: button-explode-final 1s forwards;
+    animation-delay: 0.2s;
+}
+
+/* Estilos para a segunda página de introdução */
+.texto-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Garante que o conteúdo fique centralizado se couber na tela */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.texto-caixa {
+    background-color: rgba(20, 20, 20, 0.85);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(229, 9, 20, 0.4);
+    margin: 40px 0; /* Adiciona margem vertical para a rolagem */
+}
+
+.texto-caixa h2 {
+    font-size: 2.5rem;
+    color: #e50914;
+    margin-top: 0;
+    text-shadow: 0 0 10px rgba(229, 9, 20, 0.7);
+}
+
+.texto-caixa p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.botao-final {
+    display: inline-block;
+    background-color: #e50914;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.botao-final:hover {
+    background-color: #b80710;
+    transform: translateY(-3px);
+}
+
+/* ------------------ RESPONSIVIDADE PARA CELULAR ------------------ */
+@media (max-width: 768px) {
+    .texto-caixa {
+        max-width: 90%;
+        padding: 20px;
+    }
+    
+    .texto-caixa h2 {
+        font-size: 2rem;
+    }
+    
+    .texto-caixa p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    .botao-final {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
