@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify iPhone Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="player-container">
+
+    <div class="album-art">
+      <img id="capa" src="capas/musica1.jpg" alt="Capa do Álbum">
+    </div>
+
+    <div class="track-info">
+      <h2 id="titulo">Música 1</h2>
+      <p id="artista">Artista 1</p>
+    </div>
+
+    <div class="top-controls">
+      <button id="shuffle" title="Aleatório">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M14.83 6.13l-1.31-1.31L12 6.35V2h-2v4.35l-1.52-1.52-1.31 1.31 4.5 4.5 4.5-4.5zm-5.66 12.35l1.31 1.31L12 17.65V22h2v-4.35l1.52 1.52 1.31-1.31-4.5-4.5-4.5 4.5zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+      </button>
+
+      <button id="heart" title="Curtir">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </button>
+
+      <button id="repeat" title="Repetir">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/></svg>
+      </button>
+    </div>
+
+    <div class="controls">
+      <div class="main-controls">
+        <button id="prev" title="Anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M6 18V6h2v12H6m3-6l9 6V6l-9 6z"/></svg>
+        </button>
+
+        <button id="play" class="play-btn" title="Play/Pause">
+          <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg class="icon-pause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14m8-14v14h4V5h-4z"/>
+          </svg>
+        </button>
+
+        <button id="next" title="Próxima">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M6 18V6l9 6-9 6m10-12h2v12h-2V6z"/></svg>
+        </button>
+      </div>
+
+      <div class="speed-container">
+        <button id="speed-btn" title="Velocidade">
+          <svg class="icon-clock" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path fill="white" d="M12 20a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm.5-13h-1v6l5.25 3.15.5-.86-4.75-2.79V7z"/>
+          </svg>
+        </button>
+        <div class="speed-options" id="speed-options">
+          <button data-speed="1">1x</button>
+          <button data-speed="1.25">1.25x</button>
+          <button data-speed="1.5">1.5x</button>
+          <button data-speed="2">2x</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress">
+      <span id="tempo-atual">0:00</span>
+      <input type="range" id="barra" value="0" min="0" max="100">
+      <span id="tempo-total">0:00</span>
+    </div>
+
+    <audio id="audio"></audio>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

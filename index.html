@@ -1,67 +1,280 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Início - Netflix</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="img/netflix_logo.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>❤️</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #141414;
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+  }
+
+  /* Página inicial com botão */
+  .container-intro {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+  }
+
+  @keyframes button-pulse-final {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(229, 9, 20, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 9, 20, 0); }
+  }
+
+  @keyframes button-explode-final {
+    0% { transform: scale(1); }
+    100% { transform: scale(100); opacity: 0; }
+  }
+
+  #start-button {
+    background: #e50914;
+    color: #fff;
+    border: none;
+    padding: 18px 45px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 50px;
+    animation: button-pulse-final 2s infinite;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  #start-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #start-button:hover::before {
+    opacity: 1;
+  }
+
+  #start-button.animate {
+    animation: none;
+    background: #b80710;
+  }
+
+  #start-button.animate::before {
+    opacity: 0;
+  }
+
+  #start-button.animate-explode {
+    animation: button-explode-final 1s forwards;
+    animation-delay: 0.2s;
+  }
+
+  /* Página da mensagem */
+  #pagina-mensagem {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Container inspirado no outro código */
+  .texto-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    box-sizing: border-box;
+  }
+
+  .texto-caixa {
+    max-width: 800px;
+    background: rgba(20, 20, 20, 0.95);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(229, 9, 20, 0.8);
+    border: 2px solid #e50914;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    text-align: center; /* CENTRALIZA O TEXTO */
+  }
+
+  .texto-caixa.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .texto-caixa h2 {
+    color: #e50914;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .texto-caixa p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 18px;
+  }
+
+  /* Botão final */
+  #final-button {
+    display: block;
+    margin: 40px auto 0 auto;
+    background-color: #e50914;
+    border: none;
+    padding: 15px 35px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  #final-button.show {
+    opacity: 1;
+    transform: scale(1);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-nav">
-            <div class="logo">
-                <img src="img/netflix_logo.png" alt="Netflix">
-            </div>
-            <nav>
-                <a href="#">Início</a>
-                <a href="#">Séries</a>
-                <a href="#">Filmes</a>
-                <a href="#">Minha Lista</a>
-            </nav>
-        </div>
-        <div class="header-util">
-            <i class="fas fa-search icon"></i>
-            <span class="icon-notificacao">
-                <i class="fas fa-bell"></i>
-                <span class="badge">2</span>
-            </span>
-            <img src="img/perfil-pequeno.jpg" alt="Perfil" class="perfil-pequeno">
-        </div>
-    </header>
-    <main>
-        <section class="banner-principal">
-            <div class="container">
-                <h3 class="titulo-destaque">Filme da Vida</h3>
-                <p class="sinopse">
-                    Um Filme estrelado por alguém incrivel!
-                </p>
-                <div class="botoes-banner">
-                    <a href="player.html" class="botao">
-                    <i class="fas fa-play"></i>
-                     Assistir
-                    </a>
-                    <a href="#" class="botao-info">
-                    <i class="fas fa-info-circle"></i> Mais informações
-                    </a>
-                </div>
-            </div>
-        </section>
-        <section class="carrossel-secundario">
-    <h2>Destaques da Semana</h2>
-    <div class="carrossel-container">
-        <div class="card-series" data-numero="1">
-            <img src="img/foto-1.jpg" alt="Série 1">
-        </div>
-        <div class="card-series" data-numero="2">
-            <img src="img/foto-2.jpg" alt="Série 2">
-        </div>
-        <div class="card-series" data-numero="3">
-            <img src="img/foto-3.jpg" alt="Série 3">
-        </div>
+
+<!-- Página inicial -->
+<div class="container-intro">
+  <button id="start-button">😍 Clique</button>
+</div>
+
+<!-- Página da mensagem -->
+<div id="pagina-mensagem">
+  <audio id="musica" src="audio/musica-surpresa.mp3"></audio>
+  <div class="texto-container">
+    <div class="texto-caixa" id="texto-caixa">
+      <h2>.........,</h2>
+      <p>No início, o meu plano<br>
+        Era te fazer dar risadas das minhas palhaçadas,<br>
+        Para ver se você se apaixonava,<br>
+        Mas, a cada sorriso seu,<br>
+        Eu que me apaixonava mais.
+      </p>
+
+      <p>
+        Eu reparo na maneira que seus olhos fecham<br>
+        A cada gargalhada;<br>
+        Sempre reparo nos seus lábios,<br>
+        Mas seus olhos me fazem perder o foco,<br>
+        Eu gosto da maneira que eles brilham.
+      </p>
+
+      <p>
+        Seu olhar, às vezes, me parecia apaixonado,<br>
+        E outras vezes penso<br>
+        Que talvez eu só esteja<br>
+        Procurando a humilhação mesmo, kkkk...<br>
+        Mas no fundo, acredito<br>
+        Que existe um pouco de sentimento,<br>
+        E até de desejo da sua parte também.<br>
+        E se não for, paciência,<br>
+        Pois já estou ficando louco mesmo.<br>
+        Mas não tem como eu ter certeza,<br>
+        E acho que nunca vou ter!
+      </p>
+
+      <p>
+        Eu gostaria de ver os seus pensamentos<br>
+        Para saber se você pensa em mim<br>
+        O tanto que eu penso em você.<br>
+        Uma vez, eu li em um lugar<br>
+        Que quando pensamos em alguém,<br>
+        É porque essa pessoa está pensando na gente também.<br>
+        Talvez não seja verdade,<br>
+        Mas, no fundo, eu quero acreditar!
+      </p>
+
+      <p>
+        E se um dia a vida me der a sorte<br>
+        De ter você ao meu lado por algumas horas,<br>
+        Queria te levar a um lugar tranquilo,<br>
+        Onde o tempo pareça não existir,<br>
+        Apenas para ouvir sua voz,<br>
+        Comer um Mc,<br>
+        Rir contigo até perder a noção<br>
+        E deixar o tempo dizer,<br>
+        O que a gente ainda não disse.
+      </p>
+
+      <p>
+        Às vezes me parece que você ainda não vê<br>
+        O quanto você é incrível.<br>
+        Mas se eu pudesse te mostrar por um instante,<br>
+        Você entenderia tudo que sinto.
+      </p>
+
+      <p>
+        Você lembra quando eu te falava<br>
+        Que queria que você se visse como eu te vejo?<br>
+        Pois bem, para mim, você é como uma série viciante<br>
+        Daquelas que eu nunca me canso de assistir.<br>
+        Então, criei algo para te mostrar<br>
+        Um pouco de como é te ver com meus olhos.
+      </p>
+      <h2>Assista à essa série!</h2>
+
+      <button id="final-button">Capítulo 1.</button>
     </div>
-    </section>
-    </main>
+  </div>
+</div>
+
+<script>
+const button = document.getElementById('start-button');
+const mensagem = document.getElementById('pagina-mensagem');
+const musica = document.getElementById('musica');
+const textoCaixa = document.getElementById('texto-caixa');
+const finalButton = document.getElementById('final-button');
+
+button.addEventListener('click', () => {
+  button.classList.add('animate');
+  button.classList.add('animate-explode');
+
+  setTimeout(() => {
+    document.querySelector('.container-intro').style.display = 'none';
+    mensagem.style.display = 'flex';
+    window.scrollTo(0, 0);
+    musica.play();
+
+    setTimeout(() => {
+      textoCaixa.classList.add('show');
+      setTimeout(() => {
+        finalButton.classList.add('show');
+      }, 2000);
+    }, 300);
+  }, 800);
+});
+
+// Redireciona ao clicar no botão final
+finalButton.addEventListener('click', () => {
+  window.location.href = "perfil.html";
+});
+</script>
+
+
 </body>
 </html>
