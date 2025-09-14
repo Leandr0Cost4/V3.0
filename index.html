@@ -130,7 +130,7 @@
         .final-buttons-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Alinha os botões no topo */
             gap: 20px;
             margin-top: 40px;
             opacity: 0;
@@ -141,6 +141,21 @@
         .final-buttons-container.show {
             opacity: 1;
             transform: scale(1);
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Regra corrigida para garantir a cor branca */
+        .texto-caixa .button-title {
+            font-size: 1.2rem; /* Tamanho da fonte menor */
+            color: white; /* Cor da fonte branca */
+            margin-bottom: 10px;
+            margin-top: 0;
         }
         
         @keyframes pulse {
@@ -182,7 +197,6 @@
         #final-button-spotify:hover {
             background-color: #1ed760;
         }
-
     </style>
 </head>
 <body>
@@ -259,16 +273,22 @@
                 Você lembra quando eu te falava<br>
                 Que queria que você se visse como eu te vejo?<br>
                 Pois bem, para mim, você é como uma série viciante<br>
-                Daquelas que eu nunca me canso de assistir.<br>
+                Daquelas que eu nunca me canso de assistir,<br>
+                Uma musica com armonia perfeita<br>
+                Daquelas que traz paz e alegra o coração.<br>
                 Então, criei algo para te mostrar<br>
                 Um pouco de como é te ver com meus olhos.
             </p>
-            <h2>Assista à essa série!</h2>
-
-            <div class="final-buttons-container" id="final-buttons-container">
-                <button id="final-button-netflix" class="final-button">Capítulo 1.</button>
-                <button id="final-button-spotify" class="final-button">Ver Playlist</button>
+        <div class="final-buttons-container" id="final-buttons-container">
+            <div class="button-group">
+                <h2 class="button-title">Assista à minha série!</h2>
+                <button id="final-button-netflix" class="final-button">Assistir Série</button>
             </div>
+            <div class="button-group">
+                <h2 class="button-title">Minha Playlist!</h2>
+                <button id="final-button-spotify" class="final-button">Ouvir Playlist</button>
+            </div>
+        </div>
         </div>
     </div>
 </div>
