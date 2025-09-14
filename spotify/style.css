@@ -8,10 +8,9 @@ body{
     color:white;
     display:flex;
     justify-content:center;
-    align-items:center; /* Centraliza verticalmente o conteúdo */
+    align-items:center;
     height:100vh;
     transition:background 0.5s ease;
-    /* Removido: overflow: hidden; */
 }
 
 /* Container principal do player */
@@ -25,8 +24,37 @@ body{
     text-align:center;
 }
 
-.album-art img{width:100%;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.4);object-fit:cover;transition:transform 0.3s ease;}
-.album-art img:hover{transform:scale(1.02);}
+/* --- CORREÇÃO: Fixo o tamanho do container da capa para 1x1 --- */
+.album-art {
+    width: 100%;
+    padding-top: 100%; /* Isso garante que a altura seja igual à largura */
+    position: relative; /* Essencial para o posicionamento do elemento interno */
+}
+
+/* O contêiner interno agora preenche todo o espaço fixo */
+.album-art-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* A imagem agora se ajusta ao tamanho do contêiner sem mudar o layout */
+.album-art-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Redimensiona a imagem para caber no espaço, sem distorção */
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease;
+}
+
+.album-art-inner img:hover {
+    transform: scale(1.02);
+}
+/* --- FIM DA CORREÇÃO --- */
+
 .track-info h2{font-size:1.5rem;font-weight:600;margin-bottom:5px;}
 .track-info p{font-size:0.9rem;opacity:0.75;}
 
@@ -109,11 +137,10 @@ body{
 /* Media query para telas menores (smartphones como o iPhone) */
 @media (max-width: 420px) {
     body {
-        /* Reset para que a barra de rolagem funcione */
         height: auto;
-        padding-top: 50px; /* Adiciona um espaço no topo, empurrando o player para baixo */
+        padding-top: 50px;
         align-items: start;
-        overflow: auto; /* Permite a barra de rolagem */
+        overflow: auto;
     }
 
     .player-container {
@@ -121,7 +148,7 @@ body{
         gap: 5px;
     }
 
-    .album-art img {
+    .album-art-inner img {
         border-radius: 15px;
     }
     
