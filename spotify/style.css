@@ -8,6 +8,9 @@
 }
 
 body {
+  font-family: 'Inter', sans-serif;
+  background: #121212;
+  color: white;
   display: flex;
   justify-content: center;   /* centraliza horizontalmente */
   align-items: flex-start;   /* começa de cima da tela */
@@ -21,17 +24,6 @@ body {
   max-width: 400px;           /* largura máxima ideal para telas pequenas */
   margin: 0 auto;             /* garante centralização */
 }
-
-#titulo {
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-#artista {
-  font-size: 1rem;
-  opacity: 0.8;  /* deixa um pouco mais suave */
-}
-
 
 /* Capa do álbum */
 .album-art {
