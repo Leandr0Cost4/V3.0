@@ -42,28 +42,7 @@ function loadMusic() {
     titulo.textContent = music.titulo;
     artista.textContent = music.artista;
     audio.load();
-    function updateBackgroundColor() {
-    const setGradient = () => {
-        const color = colorThief.getColor(capa);
-        // Cria um gradiente suave da cor predominante para um tom mais claro
-        const colorLight = color.map(c => Math.min(255, c + 60)); // clareia a cor
-        document.body.style.background = `
-            linear-gradient(
-                135deg,
-                rgb(${color[0]}, ${color[1]}, ${color[2]}) 0%,
-                rgb(${colorLight[0]}, ${colorLight[1]}, ${colorLight[2]}) 100%
-            )
-        `;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundAttachment = 'fixed';
-    };
-
-    if (capa.complete) {
-        setGradient();
-    } else {
-        capa.addEventListener("load", setGradient);
-    }
-}
+    updateBackgroundColor();
 }
 
 // Alterna entre play e pause
