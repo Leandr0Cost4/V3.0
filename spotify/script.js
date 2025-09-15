@@ -37,13 +37,45 @@ const colorThief = new ColorThief();
 // Carrega a música baseada no índice do estado
 function loadMusic() {
     const music = playlist[playerState.currentMusicIndex];
+
+    // Atualiza áudio, capa e textos
     audio.src = music.arquivo;
     capa.src = music.capa;
     titulo.textContent = music.titulo;
     artista.textContent = music.artista;
     audio.load();
+
+    // Atualiza fundo com gradiente baseado na capa
     updateBackgroundColor();
+
+    // === Media Session API para tela de bloqueio e player do iPhone ===
+    if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: music.titulo,
+            artist: music.artista,
+            album: '', // opcional
+            artwork: [
+                { src: music.capa, sizes: '512x512', type: 'image/jpeg' }
+            ]
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => {
+            audio.play();
+            playBtn.classList.add('playing');
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+            audio.pause();
+            playBtn.classList.remove('playing');
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+            prevMusic();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+            nextMusic();
+        });
+    }
 }
+
 
 // Alterna entre play e pause
 function togglePlayPause() {
