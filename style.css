@@ -82,7 +82,7 @@ nav a:hover {
     align-items: flex-end;
     background-image: url('img/foto-principal.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: 50% 20%;;
     position: relative;
     z-index: 1;
     overflow: hidden;

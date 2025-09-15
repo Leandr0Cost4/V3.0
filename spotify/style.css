@@ -1,37 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* Regras gerais para todos os dispositivos */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Inter',sans-serif;
-    background:#121212;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    transition:background 0.5s ease;
+/* Reset e regras gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #121212;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px 0;
 }
 
 /* Container principal do player */
-.player-container{
-    width:90%;
-    max-width:400px;
-    padding:30px 20px;
-    display:flex;
-    flex-direction:column;
-    gap:25px;
-    text-align:center;
+.player-container {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    margin-top: 5px; /* sobe o conteúdo se o valor for menor, desce se for maior */
+    margin-bottom: 20px; /* adiciona espaço extra embaixo, se necessário */
 }
 
-/* --- CORREÇÃO: Fixo o tamanho do container da capa para 1x1 --- */
+/* Capa do álbum */
 .album-art {
     width: 100%;
-    padding-top: 100%; /* Isso garante que a altura seja igual à largura */
-    position: relative; /* Essencial para o posicionamento do elemento interno */
+    padding-top: 100%; /* mantém proporção 1:1 */
+    position: relative;
 }
 
-/* O contêiner interno agora preenche todo o espaço fixo */
 .album-art-inner {
     position: absolute;
     top: 0;
@@ -40,11 +47,10 @@ body{
     height: 100%;
 }
 
-/* A imagem agora se ajusta ao tamanho do contêiner sem mudar o layout */
 .album-art-inner img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Redimensiona a imagem para caber no espaço, sem distorção */
+    object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     transition: transform 0.3s ease;
@@ -53,88 +59,210 @@ body{
 .album-art-inner img:hover {
     transform: scale(1.02);
 }
-/* --- FIM DA CORREÇÃO --- */
 
-.track-info h2{font-size:1.5rem;font-weight:600;margin-bottom:5px;}
-.track-info p{font-size:0.9rem;opacity:0.75;}
+/* Informações da música */
+.track-info h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.track-info p {
+    font-size: 0.9rem;
+    opacity: 0.75;
+}
 
 /* Controles superiores */
-.top-controls{display:flex;justify-content:space-between;align-items:center;}
-.top-controls button{background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s ease;}
-.top-controls button:hover{transform:scale(1.2);}
-.top-controls button svg{width:28px;height:28px;fill:white;opacity:0.9;}
+.top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
 
-/* Estilo para botões de controle ativos */
-.active svg{fill:#1db954 !important;opacity:1 !important;}
+.top-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+}
+
+.top-controls button:hover {
+    transform: scale(1.2);
+}
+
+.top-controls button svg {
+    width: 28px;
+    height: 28px;
+    fill: white;
+    opacity: 0.9;
+}
+
+/* Botões ativos */
+.active svg {
+    fill: #1db954 !important;
+    opacity: 1 !important;
+}
 
 /* Controles centrais (anterior, play/pause, próximo) */
 .controls {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 25px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: auto;      /* empurra os botões para baixo */
+    background: transparent; /* transparente */
+    z-index: 5;
 }
-.main-controls {
+
+.controls .main-controls {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
     gap: 25px;
 }
-.controls button{
-    background:none;
-    border:none;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:transform 0.2s ease;
+
+.controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
 }
-.controls button svg{width:40px;height:40px;fill:white;}
+
+.controls button svg {
+    width: 40px;
+    height: 40px;
+    fill: white;
+}
 
 /* Botão Play */
-.play-btn{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    background:rgba(255,255,255,0.05);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:2px solid white;
-    box-shadow:0 4px 15px rgba(0,0,0,0.4);
+.play-btn {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.play-btn:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(0,0,0,0.5);}
+
+.play-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
 
 /* Animação de pulsação */
-@keyframes pulse{
-    0%{transform:scale(1);box-shadow:0 4px 15px rgba(29,185,84,0.3);}
-    50%{transform:scale(1.05);box-shadow:0 8px 25px rgba(29,185,84,0.5);}
-    100%{transform:scale(1);box-shadow:0 4px 15px rgba(29,185,84,0.3);}
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(29,185,84,0.3);}
+    50% { transform: scale(1.05); box-shadow: 0 8px 25px rgba(29,185,84,0.5);}
+    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(29,185,84,0.3);}
 }
-.playing, .active.pulse{animation:pulse 1.5s infinite;}
-.play-btn .icon-play, .play-btn .icon-pause{width:40px;height:40px;fill:white;}
-.play-btn .icon-pause{display:none;}
-.playing .icon-play{display:none;}
-.playing .icon-pause{display:block;}
+
+.playing, .active.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+.play-btn .icon-play, .play-btn .icon-pause {
+    width: 40px;
+    height: 40px;
+    fill: white;
+}
+
+.play-btn .icon-pause { display: none; }
+.playing .icon-play { display: none; }
+.playing .icon-pause { display: block; }
 
 /* Botão de velocidade */
-.speed-container{position:relative;}
-.speed-options{position:absolute;bottom:50px;left:-10px;background:#1db954;border-radius:10px;display:none;flex-direction:column;overflow:hidden;z-index:10;}
-.speed-options button{background:none;border:none;color:white;padding:8px 15px;cursor:pointer;font-weight:600;text-align:center;}
-.speed-options button:hover{background:rgba(0,0,0,0.2);}
-.icon-clock{width:28px;height:28px;}
+.speed-container { position: relative; }
+.speed-options {
+    position: absolute;
+    bottom: 50px;
+    left: -10px;
+    background: #1db954;
+    border-radius: 10px;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 10;
+}
+
+.speed-options button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
+.speed-options button:hover {
+    background: rgba(0,0,0,0.2);
+}
+
+.icon-clock { width: 28px; height: 28px; }
 
 /* Barra de progresso */
-.progress{display:flex;align-items:center;gap:10px;margin-top:5px;}
-.progress span{font-size:0.8rem;opacity:0.8;}
-.progress input[type="range"]{flex:1;-webkit-appearance:none;height:4px;background:rgba(255,255,255,0.2);border-radius:2px;outline:none;cursor:pointer;}
-/* Track */
-.progress input[type="range"]::-webkit-slider-runnable-track {height:4px;background:rgba(255,255,255,0.2);border-radius:2px;}
-/* Thumb */
-.progress input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;height:12px;width:12px;background:#1db954;border-radius:50%;margin-top:-4px;box-shadow:0 0 5px #1db954;transition:background-color 0.2s ease, box-shadow 0.2s ease;}
-.progress input[type="range"]:hover::-webkit-slider-thumb{background-color:white;box-shadow:0 0 8px white;}
+.progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
 
-/* Media query para telas menores (smartphones como o iPhone) */
+.progress span {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.progress input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Track */
+.progress input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+}
+
+/* Thumb */
+.progress input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    background: #1db954;
+    border-radius: 50%;
+    margin-top: -4px;
+    box-shadow: 0 0 5px #1db954;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.progress input[type="range"]:hover::-webkit-slider-thumb {
+    background-color: white;
+    box-shadow: 0 0 8px white;
+}
+
+/* === Responsividade iPhone === */
 @media (max-width: 420px) {
     body {
         height: auto;
@@ -145,38 +273,20 @@ body{
 
     .player-container {
         padding: 20px 15px;
-        gap: 5px;
+        gap: 10px;
     }
 
-    .album-art-inner img {
-        border-radius: 15px;
-    }
-    
-    .track-info h2{font-size:1.2rem;}
-    .track-info p{font-size:0.8rem;}
+    .album-art-inner img { border-radius: 15px; }
 
-    .top-controls button svg, .icon-clock {
-        width: 24px;
-        height: 24px;
-    }
+    .track-info h2 { font-size: 1.2rem; }
+    .track-info p { font-size: 0.8rem; }
 
-    .main-controls {
-        gap: 20px;
-    }
-    
-    .play-btn {
-        width: 80px;
-        height: 80px;
-    }
-
+    .top-controls button svg, .icon-clock { width: 24px; height: 24px; }
+    .main-controls { gap: 20px; }
+    .play-btn { width: 80px; height: 80px; }
     .play-btn .icon-play, .play-btn .icon-pause,
-    .controls button svg {
-        width: 35px;
-        height: 35px;
-    }
+    .controls button svg { width: 35px; height: 35px; }
 
-    .progress {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    .progress { flex-wrap: wrap; justify-content: center; }
+    .controls { gap: 20px; }
 }
