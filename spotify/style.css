@@ -8,29 +8,20 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background: #121212;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-    padding: 20px 0;
+  display: flex;
+  justify-content: center;   /* centraliza horizontalmente */
+  align-items: flex-start;   /* começa de cima da tela */
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px 0;
 }
 
-/* Container principal do player */
 .player-container {
-    width: 90%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    text-align: center;
-    margin-top: 5px; /* sobe o conteúdo se o valor for menor, desce se for maior */
-    margin-bottom: 20px; /* adiciona espaço extra embaixo, se necessário */
+  width: 100%;
+  max-width: 400px;           /* largura máxima ideal para telas pequenas */
+  margin: 0 auto;             /* garante centralização */
 }
+
 
 /* Capa do álbum */
 .album-art {
