@@ -4,7 +4,8 @@ const playlist = [
     { titulo: "Baixinha", arquivo: "musicas/musica2.mp3", capa: "capas/musica2.jpg", artista: "CHININHA & L7NNON " },
     { titulo: "Ela só quer Paz", arquivo: "musicas/musica3.mp3", capa: "capas/musica3.jpg", artista: "PROJOTA" },
     { titulo: "Minha Vida", arquivo: "musicas/musica4.mp3", capa: "capas/musica4.jpg", artista: "Italo Melo ft. Junior Lord" },
-    { titulo: "Amor Livre", arquivo: "musicas/musica5.mp3", capa: "capas/musica5.jpg", artista: "Filipe Ret" }
+    { titulo: "Amor Livre", arquivo: "musicas/musica5.mp3", capa: "capas/musica5.jpg", artista: "Filipe Ret" },
+    { titulo: "Cópia Proibida", arquivo: "musicas/musica6.mp3", capa: "capas/musica6.jpg", artista: "Léo Foguete" }
 ];
 
 // Mapeamento de elementos do DOM
