@@ -14,8 +14,6 @@ const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
-const statusTimes = document.querySelectorAll(".status-time");
-
 let isPlaying = false;
 
 const song = {
@@ -112,18 +110,6 @@ function updateMediaSession() {
   navigator.mediaSession.setActionHandler("pause", pauseSong);
 }
 
-function updateStatusTime() {
-  const now = new Date();
-  const time = now.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  statusTimes.forEach((item) => {
-    item.textContent = time;
-  });
-}
-
 document.querySelectorAll("[data-open]").forEach((button) => {
   button.addEventListener("click", () => {
     setScreen(button.dataset.open);
@@ -193,8 +179,6 @@ visualLoop.addEventListener("loadeddata", () => {
   mediaWrap.classList.remove("use-fallback");
 });
 
-updateStatusTime();
-setInterval(updateStatusTime, 30000);
 setRangeProgress(0);
 updateMediaSession();
 
