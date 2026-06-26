@@ -157,6 +157,14 @@ video {
   color: #05240f;
 }
 
+.home-panel {
+  display: none;
+}
+
+.home-panel.is-active {
+  display: block;
+}
+
 .quick-grid {
   display: grid;
   gap: 10px;

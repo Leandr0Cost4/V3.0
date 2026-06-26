@@ -14,6 +14,8 @@ const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
+const filterTabs = document.querySelectorAll("[data-filter]");
+const homePanels = document.querySelectorAll("[data-home-panel]");
 let isPlaying = false;
 let hasStartedPlaylist = false;
 
@@ -23,6 +25,30 @@ const song = {
   album: "Minha melhor mem\u00f3ria",
   cover: "../img/foto-principal.jpg"
 };
+
+function setActiveFilter(filter) {
+  filterTabs.forEach((tab) => {
+    tab.classList.toggle("is-selected", tab.dataset.filter === filter);
+  });
+}
+
+function showHomePanel(panelName) {
+  homePanels.forEach((panel) => {
+    panel.classList.toggle("is-active", panel.dataset.homePanel === panelName);
+  });
+}
+
+function setHomeFilter(filter) {
+  setActiveFilter(filter);
+
+  if (filter === "playlists") {
+    setScreen("playlist");
+    return;
+  }
+
+  showHomePanel(filter === "music" ? "music" : "all");
+  setScreen("home");
+}
 
 function setScreen(name) {
   Object.entries(screens).forEach(([key, screen]) => {
@@ -123,7 +149,22 @@ function updateMediaSession() {
 
 document.querySelectorAll("[data-open]").forEach((button) => {
   button.addEventListener("click", () => {
+    if (button.dataset.open === "home") {
+      setHomeFilter("all");
+      return;
+    }
+
+    if (button.dataset.open === "playlist") {
+      setActiveFilter("playlists");
+    }
+
     setScreen(button.dataset.open);
+  });
+});
+
+filterTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    setHomeFilter(tab.dataset.filter);
   });
 });
 

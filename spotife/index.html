@@ -21,11 +21,12 @@
       </header>
 
       <nav class="filter-tabs" aria-label="Filtros">
-        <button class="filter-tab is-selected" type="button">Tudo</button>
-        <button class="filter-tab" type="button">M&uacute;sicas</button>
-        <button class="filter-tab" type="button">Playlists</button>
+        <button class="filter-tab is-selected" type="button" data-filter="all">Tudo</button>
+        <button class="filter-tab" type="button" data-filter="music">M&uacute;sicas</button>
+        <button class="filter-tab" type="button" data-filter="playlists">Playlists</button>
       </nav>
 
+      <div class="home-panel is-active" data-home-panel="all">
       <section class="quick-grid" aria-label="Playlists recentes">
         <button class="quick-card" type="button" data-open="playlist">
           <img src="../img/foto-principal.jpg" alt="Capa da playlist Minha melhor mem&oacute;ria">
@@ -45,7 +46,7 @@
 
       <section class="home-section bottom-space" aria-labelledby="recent-title">
         <h2 id="recent-title">Tocado recentemente</h2>
-        <button class="recent-row" type="button" data-open="playlist">
+        <button class="recent-row" type="button" data-play-open="player">
           <img src="../img/foto-principal.jpg" alt="">
           <span>
             <strong>Aquele gol que n&atilde;o valeu</strong>
@@ -53,6 +54,20 @@
           </span>
         </button>
       </section>
+      </div>
+
+      <div class="home-panel" data-home-panel="music">
+        <section class="home-section music-only bottom-space" aria-labelledby="music-title">
+          <h1 id="music-title">M&uacute;sicas</h1>
+          <button class="recent-row" type="button" data-play-open="player">
+            <img src="../img/foto-principal.jpg" alt="Capa da m&uacute;sica Aquele gol que n&atilde;o valeu">
+            <span>
+              <strong>Aquele gol que n&atilde;o valeu</strong>
+              <small>Leandro Dias</small>
+            </span>
+          </button>
+        </section>
+      </div>
     </section>
 
     <section class="screen screen-playlist" id="playlistScreen" aria-label="Playlist Minha melhor mem&oacute;ria">
