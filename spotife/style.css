@@ -119,33 +119,40 @@ video {
 }
 
 .wordmark {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: fit-content;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
-  font-size: 31px;
+  color: var(--spotify-green);
   line-height: 1;
-  font-weight: 900;
   letter-spacing: 0;
 }
 
-.wordmark-icon {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: var(--spotify-green);
-  position: relative;
-  flex: none;
+.brand-symbol {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
 }
 
-.wordmark-icon svg {
-  width: 26px;
-  height: 26px;
+.brand-symbol circle {
+  fill: currentColor;
+}
+
+.brand-symbol path {
   fill: none;
   stroke: #071006;
-  stroke-width: 2.25;
+  stroke-width: 5.2;
   stroke-linecap: round;
+}
+
+.brand-word {
+  color: currentColor;
+  font-size: 37px;
+  font-weight: 900;
+  line-height: .92;
 }
 .filter-tabs {
   display: flex;
@@ -906,8 +913,14 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 @media (max-width: 374px) {
-  .wordmark {
-    font-size: 28px;
+  .brand-symbol {
+    width: 37px;
+    height: 37px;
+    flex-basis: 37px;
+  }
+
+  .brand-word {
+    font-size: 32px;
   }
 
   .home-filter-row {
