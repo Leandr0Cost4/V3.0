@@ -2,7 +2,8 @@
   --spotify-green: #1ed760;
   --bg: #121212;
   --muted: #b3b3b3;
-  --player-red: #9b0000;
+  --player-accent: #203c36;
+  --player-accent-dark: #12231f;
   --nav-height: 68px;
   --mini-height: 64px;
   --safe-top: env(safe-area-inset-top, 0px);
@@ -481,7 +482,7 @@ video {
 }
 
 .screen-player {
-  background: linear-gradient(180deg, #821b1b 0, #651616 42%, #4a1111 100%);
+  background: linear-gradient(180deg, var(--player-accent) 0, var(--player-accent-dark) 52%, #121212 100%);
   padding-bottom: calc(24px + var(--safe-bottom));
 }
 
@@ -681,6 +682,7 @@ input[type="range"]::-webkit-slider-thumb {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 42px;
 }
 
 .device-icon {
@@ -753,7 +755,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--player-red);
+  background: var(--player-accent);
   text-align: left;
   box-shadow: 0 12px 24px rgba(0,0,0,.34);
 }
