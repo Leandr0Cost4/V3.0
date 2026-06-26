@@ -15,6 +15,7 @@ const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
 let isPlaying = false;
+let hasStartedPlaylist = false;
 
 const song = {
   title: "Aquele gol que n\u00e3o valeu",
@@ -49,6 +50,15 @@ function setRangeProgress(value) {
   progressBar.style.setProperty("--progress", `${value}%`);
 }
 
+function markPlaylistStarted() {
+  if (hasStartedPlaylist) {
+    return;
+  }
+
+  hasStartedPlaylist = true;
+  app.classList.add("has-played");
+}
+
 function syncPlayState(playing) {
   isPlaying = playing;
   mainPlay.classList.toggle("is-playing", playing);
@@ -60,6 +70,7 @@ function syncPlayState(playing) {
 async function playSong() {
   try {
     await audio.play();
+    markPlaylistStarted();
     syncPlayState(true);
     updateMediaSession();
   } catch (error) {
