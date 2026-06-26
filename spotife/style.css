@@ -1008,12 +1008,9 @@ input[type="range"]::-webkit-slider-thumb {
   text-align: center;
 }
 
-.shuffle-button.is-order {
-  color: #bdbdbd;
-}
-
 .shuffle-button.is-shuffle,
-.shuffle-button.is-repeat {
+.shuffle-button.is-repeat,
+.shuffle-button.is-order {
   color: var(--spotify-green);
 }
 

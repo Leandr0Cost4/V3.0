@@ -322,7 +322,7 @@ function getShareUrl() {
 function getShareData() {
   return {
     title: "Minha melhor mem\u00f3ria - SpotiF\u00ea",
-    text: "Escuta Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
+    text: "Escutar Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
     url: getShareUrl()
   };
 }
