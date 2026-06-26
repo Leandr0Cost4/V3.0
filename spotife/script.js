@@ -117,6 +117,14 @@ function toggleSong() {
   }
 }
 
+function showVisualFallback() {
+  mediaWrap.classList.add("use-fallback");
+}
+
+function showVideoVisual() {
+  mediaWrap.classList.remove("use-fallback");
+}
+
 async function startVisualLoop() {
   if (!visualLoop) {
     return;
@@ -125,8 +133,13 @@ async function startVisualLoop() {
   try {
     await visualLoop.play();
   } catch (error) {
-    mediaWrap.classList.add("use-fallback");
+    showVisualFallback();
   }
+}
+
+function openMusicPlayer() {
+  setScreen("player");
+  playSong();
 }
 
 function updateMediaSession() {
@@ -169,19 +182,10 @@ filterTabs.forEach((tab) => {
 });
 
 document.querySelectorAll("[data-play-open]").forEach((button) => {
-  button.addEventListener("click", () => {
-    setScreen(button.dataset.playOpen);
-    playSong();
-  });
+  button.addEventListener("click", openMusicPlayer);
 });
 
 mainPlay.addEventListener("click", toggleSong);
-
-spotifyPlay.addEventListener("click", (event) => {
-  event.stopPropagation();
-  setScreen("player");
-  playSong();
-});
 
 document.querySelector(".mini-player").addEventListener("click", (event) => {
   if (event.target.closest("[data-mini-toggle]")) {
@@ -223,13 +227,12 @@ progressBar.addEventListener("input", () => {
   setRangeProgress(Number(progressBar.value));
 });
 
-visualLoop.addEventListener("error", () => {
-  mediaWrap.classList.add("use-fallback");
+visualLoop.addEventListener("error", showVisualFallback);
+visualLoop.querySelectorAll("source").forEach((source) => {
+  source.addEventListener("error", showVisualFallback);
 });
 
-visualLoop.addEventListener("loadeddata", () => {
-  mediaWrap.classList.remove("use-fallback");
-});
+visualLoop.addEventListener("loadeddata", showVideoVisual);
 
 setRangeProgress(0);
 updateMediaSession();
