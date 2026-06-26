@@ -81,11 +81,16 @@ video {
 .splash-content {
   display: grid;
   justify-items: center;
+  align-content: center;
+  width: min(100%, 380px);
   gap: 19px;
+  text-align: center;
   transform: translateY(-10px);
 }
 
 .splash-wordmark {
+  justify-content: center;
+  width: 100%;
   gap: 13px;
   opacity: 0;
   animation: splashLogoIn .72s ease .12s both;
@@ -102,6 +107,7 @@ video {
 }
 
 .splash-screen p {
+  width: 100%;
   margin: 0;
   color: #fff;
   font-size: 20px;
