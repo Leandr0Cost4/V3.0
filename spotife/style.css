@@ -109,8 +109,8 @@ video {
   line-height: 1.2;
   text-align: center;
   opacity: 0;
-  transform: translateY(10px);
-  animation: splashMessageIn .58s ease 1.28s both;
+  transform: translateY(6px);
+  animation: splashMessageIn .82s cubic-bezier(.22, .61, .36, 1) 1.22s both;
 }
 
 .phone-app.splash-done .splash-screen {
@@ -134,7 +134,7 @@ video {
 @keyframes splashMessageIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(6px);
   }
 
   to {
