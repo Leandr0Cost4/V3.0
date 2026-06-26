@@ -528,8 +528,9 @@ video {
 
 .playlist-tools {
   display: flex;
-  gap: 9px;
-  overflow-x: auto;
+  justify-content: center;
+  gap: 8px;
+  overflow: visible;
   scrollbar-width: none;
   margin-bottom: 14px;
 }
