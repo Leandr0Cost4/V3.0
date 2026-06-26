@@ -20,6 +20,7 @@ const spotifyPlay = document.querySelector(".spotify-play");
 const playbackModeButton = document.querySelector("[data-playback-mode-toggle]");
 const shareSheet = document.querySelector("[data-share-sheet]");
 const shareStatus = document.querySelector("[data-share-status]");
+const shareTargetButtons = document.querySelectorAll("[data-share-target]");
 const filterTabs = document.querySelectorAll("[data-filter]");
 const homePanels = document.querySelectorAll("[data-home-panel]");
 const deviceIndicator = document.querySelector("[data-device-indicator]");
@@ -29,6 +30,7 @@ let hasStartedPlaylist = false;
 const playbackModes = ["shuffle", "repeat", "order"];
 let playbackModeIndex = 0;
 let playbackMode = playbackModes[playbackModeIndex];
+let shareTarget = "link";
 
 const playbackModeIcons = {
   shuffle: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>`,
@@ -219,6 +221,19 @@ function setHomeFilter(filter) {
   setScreen("home");
 }
 
+function applyInitialRoute() {
+  if (window.location.hash === "#playlist") {
+    setActiveFilter("playlists");
+    setScreen("playlist");
+    return;
+  }
+
+  if (window.location.hash === "#player") {
+    setActiveFilter("playlists");
+    setScreen("player");
+  }
+}
+
 function setScreen(name) {
   Object.entries(screens).forEach(([key, screen]) => {
     screen.classList.toggle("is-active", key === name);
@@ -315,16 +330,44 @@ function cyclePlaybackMode() {
   updatePlaybackModeButton();
 }
 
-function getShareUrl() {
+function getBaseShareUrl() {
   return window.location.href.split("#")[0];
 }
 
+function getShareUrl() {
+  const baseUrl = getBaseShareUrl();
+
+  if (shareTarget === "playlist") {
+    return `${baseUrl}#playlist`;
+  }
+
+  if (shareTarget === "music") {
+    return `${baseUrl}#player`;
+  }
+
+  return baseUrl;
+}
+
 function getShareData() {
+  const title = shareTarget === "music"
+    ? "Aquele gol que n\u00e3o valeu - SpotiF\u00ea"
+    : "Minha melhor mem\u00f3ria - SpotiF\u00ea";
+
   return {
-    title: "Minha melhor mem\u00f3ria - SpotiF\u00ea",
+    title,
     text: "Escutar Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
     url: getShareUrl()
   };
+}
+
+function setShareTarget(target) {
+  shareTarget = target;
+
+  shareTargetButtons.forEach((button) => {
+    button.classList.toggle("is-selected", button.dataset.shareTarget === target);
+  });
+
+  setShareStatus("");
 }
 
 function setShareStatus(message) {
@@ -506,6 +549,12 @@ document.querySelectorAll("[data-share-open]").forEach((button) => {
   button.addEventListener("click", openShareSheet);
 });
 
+shareTargetButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setShareTarget(button.dataset.shareTarget);
+  });
+});
+
 if (shareSheet) {
   shareSheet.querySelectorAll("[data-share-close]").forEach((button) => {
     button.addEventListener("click", closeShareSheet);
@@ -574,6 +623,8 @@ visualLoop.querySelectorAll("source").forEach((source) => {
 visualLoop.addEventListener("loadeddata", showVideoVisual);
 
 updatePlaybackModeButton();
+setShareTarget("link");
+applyInitialRoute();
 extractCoverColor(song.cover);
 setRangeProgress(0);
 updateMediaSession();

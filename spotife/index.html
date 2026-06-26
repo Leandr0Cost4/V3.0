@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=playlist-controls-2">
+  <link rel="stylesheet" href="style.css?v=share-targets-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -249,9 +249,9 @@
           </span>
         </div>
         <div class="share-tabs" aria-label="Tipo de compartilhamento">
-          <button class="is-selected" type="button">Playlist</button>
-          <button type="button">M&uacute;sica</button>
-          <button type="button">Link</button>
+          <button class="is-selected" type="button" data-share-target="link">Link</button>
+          <button type="button" data-share-target="playlist">Playlist</button>
+          <button type="button" data-share-target="music">M&uacute;sica</button>
         </div>
         <h2 id="shareTitle">Compartilhar</h2>
         <div class="share-actions" aria-label="Op&ccedil;&otilde;es de compartilhamento">
@@ -301,7 +301,7 @@
     <audio id="audioPlayer" preload="metadata" src="../audio/musica-surpresa.mp3"></audio>
   </main>
 
-  <script src="script.js?v=playlist-controls-2"></script>
+  <script src="script.js?v=share-targets-1"></script>
 </body>
 </html>
 
