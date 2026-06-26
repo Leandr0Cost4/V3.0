@@ -83,11 +83,12 @@ video {
   justify-items: center;
   gap: 19px;
   transform: translateY(-10px);
-  animation: splashEnter .72s ease both;
 }
 
 .splash-wordmark {
   gap: 13px;
+  opacity: 0;
+  animation: splashLogoIn .72s ease .12s both;
 }
 
 .splash-wordmark .brand-symbol {
@@ -107,6 +108,9 @@ video {
   font-weight: 760;
   line-height: 1.2;
   text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: splashMessageIn .58s ease 1.28s both;
 }
 
 .phone-app.splash-done .splash-screen {
@@ -115,15 +119,27 @@ video {
   pointer-events: none;
 }
 
-@keyframes splashEnter {
+@keyframes splashLogoIn {
   from {
     opacity: 0;
-    transform: translateY(4px) scale(.96);
+    transform: translateY(6px) scale(.94);
   }
 
   to {
     opacity: 1;
-    transform: translateY(-10px) scale(1);
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes splashMessageIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

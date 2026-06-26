@@ -1,6 +1,6 @@
 const app = document.querySelector(".phone-app");
 const splashScreen = document.getElementById("splashScreen");
-const SPLASH_DURATION_MS = 2400;
+const SPLASH_DURATION_MS = 4600;
 
 const screens = {
   home: document.getElementById("homeScreen"),
