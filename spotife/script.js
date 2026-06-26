@@ -17,12 +17,30 @@ const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
+const playbackModeButton = document.querySelector("[data-playback-mode-toggle]");
+const shareSheet = document.querySelector("[data-share-sheet]");
+const shareStatus = document.querySelector("[data-share-status]");
 const filterTabs = document.querySelectorAll("[data-filter]");
 const homePanels = document.querySelectorAll("[data-home-panel]");
 const deviceIndicator = document.querySelector("[data-device-indicator]");
 const miniDeviceIndicator = document.querySelector("[data-mini-device-indicator]");
 let isPlaying = false;
 let hasStartedPlaylist = false;
+const playbackModes = ["shuffle", "repeat", "order"];
+let playbackModeIndex = 0;
+let playbackMode = playbackModes[playbackModeIndex];
+
+const playbackModeIcons = {
+  shuffle: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>`,
+  repeat: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h9.2l-2.6-2.6L15 3l5 5-5 5-1.4-1.4L16.2 9H7a3 3 0 0 0-3 3v1H2v-1a5 5 0 0 1 5-5Zm10 10H7.8l2.6 2.6L9 21l-5-5 5-5 1.4 1.4L7.8 15H17a3 3 0 0 0 3-3v-1h2v1a5 5 0 0 1-5 5Z"/></svg>`,
+  order: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12v2H4V6Zm0 5h10v2H4v-2Zm0 5h8v2H4v-2Zm12.5-4.5V7l5 3.5-5 3.5Z"/></svg>`
+};
+
+const playbackModeLabels = {
+  shuffle: "Modo aleat\u00f3rio",
+  repeat: "Modo repeti\u00e7\u00e3o",
+  order: "Modo em ordem"
+};
 
 if (splashScreen) {
   window.setTimeout(() => {
@@ -242,6 +260,7 @@ function syncPlayState(playing) {
   spotifyPlay.classList.toggle("is-playing", playing);
   miniToggle.classList.toggle("is-playing", playing);
   mainPlay.setAttribute("aria-label", playing ? "Pausar m\u00fasica" : "Tocar m\u00fasica");
+  spotifyPlay.setAttribute("aria-label", playing ? "Pausar playlist" : "Tocar playlist");
 }
 
 async function playSong() {
@@ -265,6 +284,147 @@ function toggleSong() {
     pauseSong();
   } else {
     playSong();
+  }
+}
+
+function handlePlaylistPlayButton() {
+  if (isPlaying) {
+    pauseSong();
+    return;
+  }
+
+  setScreen("player");
+  playSong();
+}
+
+function updatePlaybackModeButton() {
+  if (!playbackModeButton) {
+    return;
+  }
+
+  playbackModeButton.innerHTML = playbackModeIcons[playbackMode];
+  playbackModeButton.classList.remove("is-shuffle", "is-repeat", "is-order");
+  playbackModeButton.classList.add(`is-${playbackMode}`);
+  playbackModeButton.setAttribute("aria-label", playbackModeLabels[playbackMode]);
+  playbackModeButton.title = playbackModeLabels[playbackMode];
+}
+
+function cyclePlaybackMode() {
+  playbackModeIndex = (playbackModeIndex + 1) % playbackModes.length;
+  playbackMode = playbackModes[playbackModeIndex];
+  updatePlaybackModeButton();
+}
+
+function getShareUrl() {
+  return window.location.href.split("#")[0];
+}
+
+function getShareData() {
+  return {
+    title: "Minha melhor mem\u00f3ria - SpotiF\u00ea",
+    text: "Escuta Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
+    url: getShareUrl()
+  };
+}
+
+function setShareStatus(message) {
+  if (!shareStatus) {
+    return;
+  }
+
+  shareStatus.textContent = message;
+}
+
+function openShareSheet() {
+  if (!shareSheet) {
+    return;
+  }
+
+  shareSheet.classList.add("is-open");
+  shareSheet.setAttribute("aria-hidden", "false");
+  setShareStatus("");
+}
+
+function closeShareSheet() {
+  if (!shareSheet) {
+    return;
+  }
+
+  shareSheet.classList.remove("is-open");
+  shareSheet.setAttribute("aria-hidden", "true");
+}
+
+function fallbackCopyText(value) {
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+async function copyShareLink() {
+  const { url } = getShareData();
+
+  try {
+    if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+    } else {
+      fallbackCopyText(url);
+    }
+    setShareStatus("Link copiado");
+  } catch (error) {
+    fallbackCopyText(url);
+    setShareStatus("Link copiado");
+  }
+}
+
+async function nativeShare() {
+  const shareData = getShareData();
+
+  if (navigator.share) {
+    await navigator.share(shareData);
+    return;
+  }
+
+  await copyShareLink();
+}
+
+function shareToWhatsApp() {
+  const shareData = getShareData();
+  const payload = encodeURIComponent(`${shareData.text} ${shareData.url}`);
+  window.open(`https://wa.me/?text=${payload}`, "_blank", "noopener");
+}
+
+function shareToSms() {
+  const shareData = getShareData();
+  const payload = encodeURIComponent(`${shareData.text} ${shareData.url}`);
+  window.location.href = `sms:?&body=${payload}`;
+}
+
+async function handleShareAction(action) {
+  if (action === "copy") {
+    await copyShareLink();
+    return;
+  }
+
+  if (action === "whatsapp") {
+    shareToWhatsApp();
+    return;
+  }
+
+  if (action === "sms") {
+    shareToSms();
+    return;
+  }
+
+  try {
+    await nativeShare();
+  } catch (error) {
+    setShareStatus("");
   }
 }
 
@@ -336,6 +496,28 @@ document.querySelectorAll("[data-play-open]").forEach((button) => {
   button.addEventListener("click", openMusicPlayer);
 });
 
+spotifyPlay.addEventListener("click", handlePlaylistPlayButton);
+
+if (playbackModeButton) {
+  playbackModeButton.addEventListener("click", cyclePlaybackMode);
+}
+
+document.querySelectorAll("[data-share-open]").forEach((button) => {
+  button.addEventListener("click", openShareSheet);
+});
+
+if (shareSheet) {
+  shareSheet.querySelectorAll("[data-share-close]").forEach((button) => {
+    button.addEventListener("click", closeShareSheet);
+  });
+
+  shareSheet.querySelectorAll("[data-share-action]").forEach((button) => {
+    button.addEventListener("click", () => {
+      handleShareAction(button.dataset.shareAction);
+    });
+  });
+}
+
 mainPlay.addEventListener("click", toggleSong);
 
 document.querySelector(".mini-player").addEventListener("click", (event) => {
@@ -365,6 +547,12 @@ audio.addEventListener("timeupdate", () => {
 });
 
 audio.addEventListener("ended", () => {
+  if (playbackMode === "repeat") {
+    audio.currentTime = 0;
+    playSong();
+    return;
+  }
+
   syncPlayState(false);
   audio.currentTime = 0;
   setRangeProgress(0);
@@ -385,6 +573,7 @@ visualLoop.querySelectorAll("source").forEach((source) => {
 
 visualLoop.addEventListener("loadeddata", showVideoVisual);
 
+updatePlaybackModeButton();
 extractCoverColor(song.cover);
 setRangeProgress(0);
 updateMediaSession();

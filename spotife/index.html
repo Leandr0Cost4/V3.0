@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=playlist-color-1">
+  <link rel="stylesheet" href="style.css?v=playlist-controls-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -117,7 +117,7 @@
           <button class="circle-muted" type="button" aria-label="Baixar">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v9.2l3.6-3.6L18 11l-6 6-6-6 1.4-1.4 3.6 3.6V4Zm-5 15h12v2H6v-2Z"/></svg>
           </button>
-          <button class="circle-muted" type="button" aria-label="Compartilhar">
+          <button class="circle-muted" type="button" data-share-open aria-label="Compartilhar">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.6.3-2.1.9L8.9 13c.1-.3.1-.6.1-1s0-.7-.1-1l7-4c.6.6 1.3.9 2.1.9a3 3 0 1 0-3-3c0 .3.1.6.1.8l-7 4.1a3 3 0 1 0 0 4.4l7 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg>
           </button>
           <button class="circle-muted" type="button" aria-label="Mais op&ccedil;&otilde;es">
@@ -125,10 +125,10 @@
           </button>
         </div>
         <div class="right-actions">
-          <button class="shuffle-button" type="button" aria-label="Aleat&oacute;rio">
+          <button class="shuffle-button" type="button" data-playback-mode-toggle aria-label="Modo aleat&oacute;rio">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>
           </button>
-          <button class="spotify-play" type="button" data-play-open="player" aria-label="Tocar playlist">
+          <button class="spotify-play" type="button" data-playlist-toggle aria-label="Tocar playlist">
             <svg class="play-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
             <svg class="pause-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
           </button>
@@ -237,6 +237,44 @@
       </span>
     </button>
 
+    <div class="share-sheet" data-share-sheet aria-hidden="true">
+      <button class="share-scrim" type="button" data-share-close aria-label="Fechar compartilhamento"></button>
+      <section class="share-panel" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+        <div class="share-handle" aria-hidden="true"></div>
+        <div class="share-preview">
+          <img src="../img/foto-principal.jpg" alt="Capa da playlist Minha melhor mem&oacute;ria">
+          <span>
+            <strong>Minha melhor mem&oacute;ria</strong>
+            <small>Aquele gol que n&atilde;o valeu &bull; Leandro Dias</small>
+          </span>
+        </div>
+        <div class="share-tabs" aria-label="Tipo de compartilhamento">
+          <button class="is-selected" type="button">Playlist</button>
+          <button type="button">M&uacute;sica</button>
+          <button type="button">Link</button>
+        </div>
+        <h2 id="shareTitle">Compartilhar</h2>
+        <div class="share-actions" aria-label="Op&ccedil;&otilde;es de compartilhamento">
+          <button type="button" data-share-action="native">
+            <span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.6.3-2.1.9L8.9 13c.1-.3.1-.6.1-1s0-.7-.1-1l7-4c.6.6 1.3.9 2.1.9a3 3 0 1 0-3-3c0 .3.1.6.1.8l-7 4.1a3 3 0 1 0 0 4.4l7 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg></span>
+            <span>Compartilhar</span>
+          </button>
+          <button type="button" data-share-action="copy">
+            <span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 0 1 4.2 4.2l-2.1 2.1-1.4-1.4 2.1-2.1a1 1 0 1 0-1.4-1.4L12 13.4a1 1 0 0 1-1.4 0Zm2.8-2.8a1 1 0 0 1 0 1.4l-3.5 3.5a3 3 0 1 1-4.2-4.2l2.1-2.1 1.4 1.4-2.1 2.1a1 1 0 1 0 1.4 1.4l3.5-3.5a1 1 0 0 1 1.4 0Z"/></svg></span>
+            <span>Copiar link</span>
+          </button>
+          <button type="button" data-share-action="whatsapp">
+            <span class="share-icon share-icon-whatsapp">W</span>
+            <span>WhatsApp</span>
+          </button>
+          <button type="button" data-share-action="sms">
+            <span class="share-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H8.4L4 19.5V5Zm2 2v8.3l1.7-1.3H18V7H6Z"/></svg></span>
+            <span>Mensagens</span>
+          </button>
+        </div>
+        <p class="share-status" data-share-status aria-live="polite"></p>
+      </section>
+    </div>
     <nav class="bottom-nav" aria-label="Navega&ccedil;&atilde;o inferior">
       <button class="is-selected" type="button" data-open="home">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.6 12 4l8 6.6V21h-6v-6h-4v6H4V10.6Z"/></svg>
@@ -263,7 +301,7 @@
     <audio id="audioPlayer" preload="metadata" src="../audio/musica-surpresa.mp3"></audio>
   </main>
 
-  <script src="script.js?v=playlist-color-1"></script>
+  <script src="script.js?v=playlist-controls-1"></script>
 </body>
 </html>
 
