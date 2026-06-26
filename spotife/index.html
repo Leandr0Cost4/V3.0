@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -13,18 +13,16 @@
   <main class="phone-app" data-screen="home">
     <section class="screen screen-home is-active" id="homeScreen" aria-label="In&iacute;cio SpotiF&ecirc;">
       <header class="home-header">
-        <button class="profile-avatar" type="button" aria-label="Perfil de Fernanda">F</button>
-        <div class="wordmark" aria-label="SpotiF&ecirc;">
-          <span class="wordmark-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8.5 12.2c5.4-1.6 11.3-.9 15.9 1.9"/><path d="M9.6 16.4c4.3-1.2 8.9-.7 12.6 1.5"/><path d="M10.8 20.2c3.1-.8 6.3-.5 9 1"/></svg></span>
-          <span>SpotiF&ecirc;</span>
+        <div class="wordmark" aria-label="SpotiF&ecirc;">SpotiF&ecirc;</div>
+        <div class="home-filter-row">
+          <button class="profile-avatar" type="button" aria-label="Perfil de Fernanda">F</button>
+          <nav class="filter-tabs" aria-label="Filtros">
+            <button class="filter-tab is-selected" type="button" data-filter="all">Tudo</button>
+            <button class="filter-tab" type="button" data-filter="music">M&uacute;sica</button>
+            <button class="filter-tab" type="button" data-filter="playlists">Playlists</button>
+          </nav>
         </div>
       </header>
-
-      <nav class="filter-tabs" aria-label="Filtros">
-        <button class="filter-tab is-selected" type="button" data-filter="all">Tudo</button>
-        <button class="filter-tab" type="button" data-filter="music">M&uacute;sicas</button>
-        <button class="filter-tab" type="button" data-filter="playlists">Playlists</button>
-      </nav>
 
       <div class="home-panel is-active" data-home-panel="all">
       <section class="quick-grid" aria-label="Playlists recentes">

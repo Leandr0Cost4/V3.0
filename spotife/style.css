@@ -88,11 +88,17 @@ video {
 }
 
 .home-header {
-  display: grid;
-  grid-template-columns: 48px 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 2px 0 22px;
+}
+
+.home-filter-row {
+  display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  width: 100%;
 }
 
 .profile-avatar,
@@ -106,15 +112,15 @@ video {
 }
 
 .profile-avatar {
-  width: 48px;
-  height: 48px;
-  font-size: 25px;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  font-size: 26px;
 }
 
 .wordmark {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+  width: 100%;
+  text-align: center;
   font-size: 31px;
   line-height: 1;
   font-weight: 900;
@@ -140,17 +146,25 @@ video {
 }
 .filter-tabs {
   display: flex;
+  flex: 1;
   gap: 10px;
-  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.filter-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-tab {
-  min-height: 42px;
-  padding: 0 22px;
+  min-height: 50px;
+  flex: 0 0 auto;
+  padding: 0 23px;
   border-radius: 999px;
-  background: #333;
-  font-size: 17px;
+  background: #303030;
+  font-size: 18px;
   font-weight: 650;
+  white-space: nowrap;
 }
 
 .filter-tab.is-selected {
@@ -889,11 +903,27 @@ input[type="range"]::-webkit-slider-thumb {
 
 @media (max-width: 374px) {
   .wordmark {
-    font-size: 27px;
+    font-size: 28px;
+  }
+
+  .home-filter-row {
+    gap: 10px;
+  }
+
+  .profile-avatar {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+    font-size: 23px;
+  }
+
+  .filter-tabs {
+    gap: 8px;
   }
 
   .filter-tab {
-    padding: 0 17px;
+    min-height: 44px;
+    padding: 0 16px;
     font-size: 16px;
   }
 
