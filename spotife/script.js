@@ -1,4 +1,7 @@
-﻿const app = document.querySelector(".phone-app");
+const app = document.querySelector(".phone-app");
+const splashScreen = document.getElementById("splashScreen");
+const SPLASH_DURATION_MS = 2400;
+
 const screens = {
   home: document.getElementById("homeScreen"),
   playlist: document.getElementById("playlistScreen"),
@@ -21,6 +24,19 @@ const miniDeviceIndicator = document.querySelector("[data-mini-device-indicator]
 let isPlaying = false;
 let hasStartedPlaylist = false;
 
+if (splashScreen) {
+  window.setTimeout(() => {
+    app.classList.add("splash-done");
+    app.classList.remove("is-splashing");
+    splashScreen.setAttribute("aria-hidden", "true");
+  }, SPLASH_DURATION_MS);
+
+  splashScreen.addEventListener("transitionend", (event) => {
+    if (event.propertyName === "opacity") {
+      splashScreen.remove();
+    }
+  });
+}
 
 const playbackDevice = {
   type: "speaker",

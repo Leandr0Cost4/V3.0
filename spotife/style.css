@@ -65,6 +65,68 @@ video {
   box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 30px 90px rgba(0,0,0,.45);
 }
 
+.splash-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: calc(24px + var(--safe-top)) 26px calc(24px + var(--safe-bottom));
+  background: #000;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .62s ease, visibility .62s ease;
+}
+
+.splash-content {
+  display: grid;
+  justify-items: center;
+  gap: 19px;
+  transform: translateY(-10px);
+  animation: splashEnter .72s ease both;
+}
+
+.splash-wordmark {
+  gap: 13px;
+}
+
+.splash-wordmark .brand-symbol {
+  width: 58px;
+  height: 58px;
+  flex-basis: 58px;
+}
+
+.splash-wordmark .brand-word {
+  font-size: clamp(41px, 12vw, 54px);
+}
+
+.splash-screen p {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 760;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.phone-app.splash-done .splash-screen {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@keyframes splashEnter {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+}
+
 .screen {
   position: absolute;
   inset: 0;
@@ -921,6 +983,20 @@ input[type="range"]::-webkit-slider-thumb {
 
   .brand-word {
     font-size: 32px;
+  }
+
+  .splash-wordmark .brand-symbol {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .splash-wordmark .brand-word {
+    font-size: 39px;
+  }
+
+  .splash-screen p {
+    font-size: 18px;
   }
 
   .home-filter-row {
