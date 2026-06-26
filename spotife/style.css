@@ -4,6 +4,9 @@
   --muted: #b3b3b3;
   --player-accent: #203c36;
   --player-accent-dark: #12231f;
+  --playlist-accent: #4a403c;
+  --playlist-accent-mid: #2a2422;
+  --playlist-accent-dark: #121212;
   --nav-height: 68px;
   --mini-height: 64px;
   --safe-top: env(safe-area-inset-top, 0px);
@@ -381,7 +384,7 @@ video {
 }
 
 .screen-playlist {
-  background: linear-gradient(180deg, #ed1b24 0, #681719 300px, #121212 520px);
+  background: linear-gradient(180deg, var(--playlist-accent) 0, var(--playlist-accent-mid) 330px, var(--playlist-accent-dark) 620px, #121212 100%);
 }
 
 .screen-topbar,

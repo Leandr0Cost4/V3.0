@@ -92,6 +92,32 @@ function applyPlayerColor(color) {
   app.style.setProperty("--player-accent-dark", rgbToCss(accentDark));
 }
 
+function normalizePlaylistColor(color) {
+  const muted = shadeColor(color, 0.82);
+  const floor = 34;
+
+  return {
+    r: Math.max(floor, muted.r),
+    g: Math.max(floor, muted.g),
+    b: Math.max(floor, muted.b)
+  };
+}
+
+function applyPlaylistColor(color) {
+  const accent = normalizePlaylistColor(color);
+  const accentMid = shadeColor(accent, 0.58);
+  const accentDark = shadeColor(accent, 0.32);
+
+  app.style.setProperty("--playlist-accent", rgbToCss(accent));
+  app.style.setProperty("--playlist-accent-mid", rgbToCss(accentMid));
+  app.style.setProperty("--playlist-accent-dark", rgbToCss(accentDark));
+}
+
+function applyCoverColor(color) {
+  applyPlayerColor(color);
+  applyPlaylistColor(color);
+}
+
 function extractCoverColor(src) {
   const image = new Image();
   image.crossOrigin = "anonymous";
@@ -134,12 +160,14 @@ function extractCoverColor(src) {
     }
 
     if (count > 0) {
-      applyPlayerColor({ r: r / count, g: g / count, b: b / count });
+      applyCoverColor({ r: r / count, g: g / count, b: b / count });
+    } else {
+      applyCoverColor({ r: 74, g: 64, b: 60 });
     }
   });
 
   image.addEventListener("error", () => {
-    applyPlayerColor({ r: 32, g: 60, b: 54 });
+    applyCoverColor({ r: 74, g: 64, b: 60 });
   });
 }
 const song = {
@@ -357,6 +385,7 @@ visualLoop.querySelectorAll("source").forEach((source) => {
 
 visualLoop.addEventListener("loadeddata", showVideoVisual);
 
+extractCoverColor(song.cover);
 setRangeProgress(0);
 updateMediaSession();
 
