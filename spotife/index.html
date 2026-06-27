@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=playlist-tools-1">
+  <link rel="stylesheet" href="style.css?v=player-layout-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -209,17 +209,23 @@
       <div class="device-row">
         <span class="playback-device" data-device-indicator></span>
         <span class="right-icons">
-          <button type="button" aria-label="Compartilhar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.6.3-2.1.9L8.9 13c.1-.3.1-.6.1-1s0-.7-.1-1l7-4c.6.6 1.3.9 2.1.9a3 3 0 1 0-3-3c0 .3.1.6.1.8l-7 4.1a3 3 0 1 0 0 4.4l7 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg></button>
+          <button type="button" data-share-open aria-label="Compartilhar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.6.3-2.1.9L8.9 13c.1-.3.1-.6.1-1s0-.7-.1-1l7-4c.6.6 1.3.9 2.1.9a3 3 0 1 0-3-3c0 .3.1.6.1.8l-7 4.1a3 3 0 1 0 0 4.4l7 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg></button>
           <button type="button" aria-label="Fila"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h10v2H4v-2Z"/></svg></button>
         </span>
       </div>
 
       <section class="artist-card" aria-labelledby="artist-title">
         <img src="../img/perfil-pequeno.jpg" alt="Foto de Leandro Dias">
-        <div>
+        <div class="artist-card-body">
           <h2 id="artist-title">Sobre o artista</h2>
-          <strong>Leandro Dias</strong>
-          <p>Cantor, compositor e produtor de Aquele gol que n&atilde;o valeu.</p>
+          <div class="artist-title-row">
+            <span>
+              <strong>Leandro Dias</strong>
+              <small>Cantor, compositor e produtor</small>
+            </span>
+            <button type="button">Seguir</button>
+          </div>
+          <p>Leandro Dias comp&ocirc;s e produziu Aquele gol que n&atilde;o valeu.</p>
         </div>
       </section>
     </section>
@@ -301,7 +307,7 @@
     <audio id="audioPlayer" preload="metadata" src="../audio/musica-surpresa.mp3"></audio>
   </main>
 
-  <script src="script.js?v=share-targets-1"></script>
+  <script src="script.js?v=player-layout-1"></script>
 </body>
 </html>
 
