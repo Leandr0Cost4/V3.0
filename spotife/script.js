@@ -17,7 +17,7 @@ const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
-const playbackModeButton = document.querySelector("[data-playback-mode-toggle]");
+const playbackModeButtons = document.querySelectorAll("[data-playback-mode-toggle]");
 const shareSheet = document.querySelector("[data-share-sheet]");
 const shareStatus = document.querySelector("[data-share-status]");
 const shareTargetButtons = document.querySelectorAll("[data-share-target]");
@@ -313,17 +313,14 @@ function handlePlaylistPlayButton() {
 }
 
 function updatePlaybackModeButton() {
-  if (!playbackModeButton) {
-    return;
-  }
-
-  playbackModeButton.innerHTML = playbackModeIcons[playbackMode];
-  playbackModeButton.classList.remove("is-shuffle", "is-repeat", "is-order");
-  playbackModeButton.classList.add(`is-${playbackMode}`);
-  playbackModeButton.setAttribute("aria-label", playbackModeLabels[playbackMode]);
-  playbackModeButton.title = playbackModeLabels[playbackMode];
+  playbackModeButtons.forEach((button) => {
+    button.innerHTML = playbackModeIcons[playbackMode];
+    button.classList.remove("is-shuffle", "is-repeat", "is-order");
+    button.classList.add(`is-${playbackMode}`);
+    button.setAttribute("aria-label", playbackModeLabels[playbackMode]);
+    button.title = playbackModeLabels[playbackMode];
+  });
 }
-
 function cyclePlaybackMode() {
   playbackModeIndex = (playbackModeIndex + 1) % playbackModes.length;
   playbackMode = playbackModes[playbackModeIndex];
@@ -541,9 +538,9 @@ document.querySelectorAll("[data-play-open]").forEach((button) => {
 
 spotifyPlay.addEventListener("click", handlePlaylistPlayButton);
 
-if (playbackModeButton) {
-  playbackModeButton.addEventListener("click", cyclePlaybackMode);
-}
+playbackModeButtons.forEach((button) => {
+  button.addEventListener("click", cyclePlaybackMode);
+});
 
 document.querySelectorAll("[data-share-open]").forEach((button) => {
   button.addEventListener("click", openShareSheet);

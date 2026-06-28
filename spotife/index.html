@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=player-buttons-compact-1">
+  <link rel="stylesheet" href="style.css?v=player-mode-sync-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -188,7 +188,7 @@
       </div>
 
       <div class="player-controls" aria-label="Controles da m&uacute;sica">
-        <button class="green-icon" type="button" aria-label="Aleat&oacute;rio">
+        <button class="green-icon" type="button" data-playback-mode-toggle aria-label="Modo aleat&oacute;rio">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>
         </button>
         <button class="skip-icon is-disabled" type="button" aria-label="Anterior">
@@ -307,7 +307,7 @@
     <audio id="audioPlayer" preload="metadata" src="../audio/musica-surpresa.mp3"></audio>
   </main>
 
-  <script src="script.js?v=player-buttons-compact-1"></script>
+  <script src="script.js?v=player-mode-sync-1"></script>
 </body>
 </html>
 
