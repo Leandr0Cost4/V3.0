@@ -652,8 +652,8 @@ video {
 
 .song-heading {
   display: grid;
-  grid-template-columns: minmax(0,1fr) 40px;
-  gap: 12px;
+  grid-template-columns: minmax(0,1fr) 34px;
+  gap: 8px;
   align-items: center;
   margin-bottom: 15px;
 }
@@ -664,23 +664,23 @@ video {
 
 .song-title-area h1 {
   margin: 0;
-  font-size: clamp(27px, 6.9vw, 30px);
-  line-height: 1.08;
+  font-size: clamp(20px, 5.35vw, 23px);
+  line-height: 1.12;
   letter-spacing: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .song-title-area p {
-  margin: 7px 0 0;
+  margin: 6px 0 0;
   color: rgba(255,255,255,.74);
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .saved-check {
-  width: 40px;
-  height: 40px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -689,8 +689,8 @@ video {
 }
 
 .saved-check svg {
-  width: 27px;
-  height: 27px;
+  width: 23px;
+  height: 23px;
 }
 
 .progress-block {
@@ -1264,7 +1264,7 @@ input[type="range"]::-webkit-slider-thumb {
   }
 
   .song-title-area h1 {
-    font-size: 25px;
+    font-size: 19px;
   }
 
   .player-controls {
