@@ -601,12 +601,12 @@ video {
 
 .screen-player {
   background: linear-gradient(180deg, var(--player-accent) 0, var(--player-accent-dark) 56%, #121212 100%);
-  padding: calc(6px + var(--safe-top)) 20px calc(20px + var(--safe-bottom));
+  padding: calc(2px + var(--safe-top)) 20px calc(18px + var(--safe-bottom));
 }
 
 .player-topbar {
   height: 42px;
-  margin-bottom: 34px;
+  margin-bottom: 14px;
 }
 
 .player-topbar span {
@@ -619,7 +619,7 @@ video {
   position: relative;
   width: min(calc(100% - 46px), 45svh);
   aspect-ratio: 1;
-  margin: 0 auto 40px;
+  margin: 0 auto 34px;
   border-radius: 7px;
   overflow: hidden;
   box-shadow: 0 18px 42px rgba(0,0,0,.24);
@@ -655,7 +655,7 @@ video {
   grid-template-columns: minmax(0,1fr) 40px;
   gap: 12px;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 15px;
 }
 
 .song-title-area {
@@ -694,7 +694,7 @@ video {
 }
 
 .progress-block {
-  margin-bottom: 20px;
+  margin-bottom: 17px;
 }
 
 input[type="range"] {
@@ -727,7 +727,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .green-icon,
@@ -782,7 +782,7 @@ input[type="range"]::-webkit-slider-thumb {
   align-items: center;
   color: var(--spotify-green);
   font-size: 14.5px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .playback-device,
