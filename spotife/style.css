@@ -723,7 +723,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .player-controls {
   display: grid;
-  grid-template-columns: 38px 42px 68px 42px 38px;
+  grid-template-columns: 34px 38px 62px 38px 34px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -744,8 +744,8 @@ input[type="range"]::-webkit-slider-thumb {
 .green-icon svg,
 .skip-icon svg,
 .timer-icon svg {
-  width: 34px;
-  height: 34px;
+  width: 31px;
+  height: 31px;
 }
 
 .skip-icon.is-disabled {
@@ -753,8 +753,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .large-play {
-  width: 68px;
-  height: 68px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -763,8 +763,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .large-play svg {
-  width: 38px;
-  height: 38px;
+  width: 34px;
+  height: 34px;
 }
 
 .pause-svg,
@@ -811,14 +811,22 @@ input[type="range"]::-webkit-slider-thumb {
   flex: none;
 }
 
+.right-icons {
+  transform: translateY(-9px);
+}
+
 .right-icons button {
   color: #fff;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: grid;
   place-items: center;
 }
 
+.right-icons svg {
+  width: 25px;
+  height: 25px;
+}
 .artist-card {
   border-radius: 13px;
   overflow: hidden;
