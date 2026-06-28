@@ -53,6 +53,10 @@ const playbackModeLabels = {
   order: "Modo em ordem"
 };
 
+function syncPlaybackModeBehavior() {
+  audio.loop = playbackMode === "repeat";
+}
+
 if (splashScreen) {
   window.setTimeout(() => {
     app.classList.add("splash-done");
@@ -326,6 +330,8 @@ function handlePlaylistPlayButton() {
 }
 
 function updatePlaybackModeButton() {
+  syncPlaybackModeBehavior();
+
   playbackModeButtons.forEach((button) => {
     button.innerHTML = playbackModeIcons[playbackMode];
     button.classList.remove("is-shuffle", "is-repeat", "is-order");
