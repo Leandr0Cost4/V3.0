@@ -35,6 +35,11 @@ let playbackModeIndex = 0;
 let playbackMode = playbackModes[playbackModeIndex];
 let shareTarget = "link";
 let playbackSpeed = 1;
+const IMAGE_VERSION = "images-refresh-1";
+
+function versionedImage(path) {
+  return `${path}?v=${IMAGE_VERSION}`;
+}
 
 const playbackModeIcons = {
   shuffle: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>`,
@@ -195,14 +200,14 @@ function extractCoverColor(src, applyColor = applyCoverColor) {
   });
 }
 const playlist = {
-  cover: "imagens/capa-playlist.jpg"
+  cover: versionedImage("imagens/capa-playlist.jpg")
 };
 
 const song = {
   title: "Aquele gol que n\u00e3o valeu",
   artist: "Leandro Dias",
   album: "Minha melhor mem\u00f3ria",
-  cover: "imagens/capa-musica.jpg"
+  cover: versionedImage("imagens/capa-musica.jpg")
 };
 
 function setActiveFilter(filter) {
