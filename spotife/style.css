@@ -298,7 +298,8 @@ video {
 .quick-card img {
   width: 58px;
   height: 58px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #191919;
 }
 
 .quick-card span {
@@ -332,7 +333,8 @@ video {
   width: 180px;
   height: 180px;
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #191919;
   box-shadow: 0 10px 28px rgba(0,0,0,.35);
 }
 
@@ -422,7 +424,8 @@ video {
 .playlist-cover {
   width: min(220px, 60vw);
   height: min(220px, 60vw);
-  object-fit: cover;
+  object-fit: contain;
+  background: #191919;
   border-radius: 6px;
   margin: 0 auto 16px;
   box-shadow: 0 16px 36px rgba(0,0,0,.34);
