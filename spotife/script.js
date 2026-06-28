@@ -19,6 +19,9 @@ const miniToggle = document.querySelector("[data-mini-toggle]");
 const spotifyPlay = document.querySelector(".spotify-play");
 const playbackModeButtons = document.querySelectorAll("[data-playback-mode-toggle]");
 const shareSheet = document.querySelector("[data-share-sheet]");
+const speedSheet = document.querySelector("[data-speed-sheet]");
+const speedOpenButton = document.querySelector("[data-speed-open]");
+const speedOptionButtons = document.querySelectorAll("[data-speed-option]");
 const shareStatus = document.querySelector("[data-share-status]");
 const shareTargetButtons = document.querySelectorAll("[data-share-target]");
 const filterTabs = document.querySelectorAll("[data-filter]");
@@ -31,6 +34,7 @@ const playbackModes = ["shuffle", "repeat", "order"];
 let playbackModeIndex = 0;
 let playbackMode = playbackModes[playbackModeIndex];
 let shareTarget = "link";
+let playbackSpeed = 1;
 
 const playbackModeIcons = {
   shuffle: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>`,
@@ -394,6 +398,51 @@ function closeShareSheet() {
   shareSheet.setAttribute("aria-hidden", "true");
 }
 
+function formatSpeedLabel(speed) {
+  return `${speed.toFixed(1).replace(".", ",")}x`;
+}
+
+function updateSpeedButtons() {
+  speedOptionButtons.forEach((button) => {
+    const speed = Number(button.dataset.speedOption);
+    button.classList.toggle("is-selected", speed === playbackSpeed);
+  });
+
+  if (!speedOpenButton) {
+    return;
+  }
+
+  const speedLabel = formatSpeedLabel(playbackSpeed);
+  speedOpenButton.classList.toggle("is-speed-adjusted", playbackSpeed !== 1);
+  speedOpenButton.setAttribute("aria-label", `Velocidade ${speedLabel}`);
+  speedOpenButton.title = `Velocidade ${speedLabel}`;
+}
+
+function setPlaybackSpeed(speed) {
+  playbackSpeed = speed;
+  audio.playbackRate = speed;
+  visualLoop.playbackRate = speed;
+  updateSpeedButtons();
+}
+
+function openSpeedSheet() {
+  if (!speedSheet) {
+    return;
+  }
+
+  closeShareSheet();
+  speedSheet.classList.add("is-open");
+  speedSheet.setAttribute("aria-hidden", "false");
+}
+
+function closeSpeedSheet() {
+  if (!speedSheet) {
+    return;
+  }
+
+  speedSheet.classList.remove("is-open");
+  speedSheet.setAttribute("aria-hidden", "true");
+}
 function fallbackCopyText(value) {
   const textarea = document.createElement("textarea");
   textarea.value = value;
@@ -542,6 +591,22 @@ playbackModeButtons.forEach((button) => {
   button.addEventListener("click", cyclePlaybackMode);
 });
 
+if (speedOpenButton) {
+  speedOpenButton.addEventListener("click", openSpeedSheet);
+}
+
+speedOptionButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    setPlaybackSpeed(Number(button.dataset.speedOption));
+    closeSpeedSheet();
+  });
+});
+
+if (speedSheet) {
+  speedSheet.querySelectorAll("[data-speed-close]").forEach((button) => {
+    button.addEventListener("click", closeSpeedSheet);
+  });
+}
 document.querySelectorAll("[data-share-open]").forEach((button) => {
   button.addEventListener("click", openShareSheet);
 });
@@ -621,6 +686,7 @@ visualLoop.addEventListener("loadeddata", showVideoVisual);
 
 updatePlaybackModeButton();
 setShareTarget("link");
+setPlaybackSpeed(1);
 applyInitialRoute();
 extractCoverColor(song.cover);
 setRangeProgress(0);
