@@ -142,7 +142,7 @@ function applyCoverColor(color) {
   applyPlaylistColor(color);
 }
 
-function extractCoverColor(src) {
+function extractCoverColor(src, applyColor = applyCoverColor) {
   const image = new Image();
   image.crossOrigin = "anonymous";
   image.src = src;
@@ -184,21 +184,25 @@ function extractCoverColor(src) {
     }
 
     if (count > 0) {
-      applyCoverColor({ r: r / count, g: g / count, b: b / count });
+      applyColor({ r: r / count, g: g / count, b: b / count });
     } else {
-      applyCoverColor({ r: 74, g: 64, b: 60 });
+      applyColor({ r: 74, g: 64, b: 60 });
     }
   });
 
   image.addEventListener("error", () => {
-    applyCoverColor({ r: 74, g: 64, b: 60 });
+    applyColor({ r: 74, g: 64, b: 60 });
   });
 }
+const playlist = {
+  cover: "imagens/capa-playlist.jpg"
+};
+
 const song = {
   title: "Aquele gol que n\u00e3o valeu",
   artist: "Leandro Dias",
   album: "Minha melhor mem\u00f3ria",
-  cover: "../img/foto-principal.jpg"
+  cover: "imagens/capa-musica.jpg"
 };
 
 function setActiveFilter(filter) {
@@ -688,7 +692,8 @@ updatePlaybackModeButton();
 setShareTarget("link");
 setPlaybackSpeed(1);
 applyInitialRoute();
-extractCoverColor(song.cover);
+extractCoverColor(song.cover, applyPlayerColor);
+extractCoverColor(playlist.cover, applyPlaylistColor);
 setRangeProgress(0);
 updateMediaSession();
 
