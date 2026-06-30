@@ -547,6 +547,7 @@ async function startVisualLoop() {
 
   try {
     await visualLoop.play();
+    showVideoVisual();
   } catch (error) {
     showVisualFallback();
   }
