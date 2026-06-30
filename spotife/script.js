@@ -10,6 +10,13 @@ const screens = {
 
 const audio = document.getElementById("audioPlayer");
 const visualLoop = document.getElementById("visualLoop");
+let visualLoopCopy = null;
+let activeVisualLoop = visualLoop;
+let standbyVisualLoop = null;
+let visualLoopSwitching = false;
+let visualLoopWatcherStarted = false;
+const VISUAL_LOOP_OVERLAP_SECONDS = 0.2;
+const VISUAL_CROSSFADE_MS = 90;
 const mediaWrap = document.querySelector(".player-media-wrap");
 const mainPlay = document.getElementById("mainPlay");
 const progressBar = document.getElementById("progressBar");
@@ -436,7 +443,11 @@ function updateSpeedButtons() {
 function setPlaybackSpeed(speed) {
   playbackSpeed = speed;
   audio.playbackRate = speed;
-  visualLoop.playbackRate = speed;
+  [visualLoop, visualLoopCopy].forEach((video) => {
+    if (video) {
+      video.playbackRate = speed;
+    }
+  });
   updateSpeedButtons();
 }
 
@@ -540,14 +551,117 @@ function showVideoVisual() {
   mediaWrap.classList.remove("use-fallback");
 }
 
+function prepareVisualVideo(video) {
+  video.loop = false;
+  video.muted = true;
+  video.playsInline = true;
+  video.preload = "auto";
+  video.playbackRate = playbackSpeed;
+  video.addEventListener("error", showVisualFallback);
+  video.addEventListener("loadeddata", showVideoVisual);
+  video.addEventListener("ended", () => {
+    if (video !== activeVisualLoop) {
+      return;
+    }
+
+    video.currentTime = 0;
+    video.play().catch(showVisualFallback);
+  });
+
+  video.querySelectorAll("source").forEach((source) => {
+    source.addEventListener("error", showVisualFallback);
+  });
+}
+
+function setupSeamlessVisualLoop() {
+  if (!visualLoop || visualLoopCopy) {
+    return;
+  }
+
+  prepareVisualVideo(visualLoop);
+  visualLoopCopy = visualLoop.cloneNode(true);
+  visualLoopCopy.removeAttribute("id");
+  visualLoopCopy.classList.remove("is-active");
+  visualLoopCopy.setAttribute("aria-hidden", "true");
+  prepareVisualVideo(visualLoopCopy);
+  visualLoop.after(visualLoopCopy);
+  standbyVisualLoop = visualLoopCopy;
+}
+
+function resetHiddenVisual(video) {
+  window.setTimeout(() => {
+    video.pause();
+    video.currentTime = 0;
+    visualLoopSwitching = false;
+  }, VISUAL_CROSSFADE_MS);
+}
+
+async function switchVisualLoop() {
+  if (visualLoopSwitching || !activeVisualLoop || !standbyVisualLoop) {
+    return;
+  }
+
+  visualLoopSwitching = true;
+
+  try {
+    standbyVisualLoop.currentTime = 0;
+    await standbyVisualLoop.play();
+    standbyVisualLoop.classList.add("is-active");
+    activeVisualLoop.classList.remove("is-active");
+
+    const previousVisual = activeVisualLoop;
+    activeVisualLoop = standbyVisualLoop;
+    standbyVisualLoop = previousVisual;
+    resetHiddenVisual(previousVisual);
+  } catch (error) {
+    visualLoopSwitching = false;
+    try {
+      activeVisualLoop.currentTime = 0;
+      await activeVisualLoop.play();
+      showVideoVisual();
+    } catch (fallbackError) {
+      showVisualFallback();
+    }
+  }
+}
+
+function watchSeamlessVisualLoop() {
+  if (!visualLoopWatcherStarted) {
+    return;
+  }
+
+  if (activeVisualLoop && !activeVisualLoop.paused && !mediaWrap.classList.contains("use-fallback")) {
+    const duration = activeVisualLoop.duration;
+    const remaining = duration - activeVisualLoop.currentTime;
+
+    if (Number.isFinite(duration) && duration > VISUAL_LOOP_OVERLAP_SECONDS && remaining <= VISUAL_LOOP_OVERLAP_SECONDS) {
+      switchVisualLoop();
+    }
+  }
+
+  window.requestAnimationFrame(watchSeamlessVisualLoop);
+}
+
+function startVisualLoopWatcher() {
+  if (visualLoopWatcherStarted) {
+    return;
+  }
+
+  visualLoopWatcherStarted = true;
+  window.requestAnimationFrame(watchSeamlessVisualLoop);
+}
+
 async function startVisualLoop() {
   if (!visualLoop) {
     return;
   }
 
+  setupSeamlessVisualLoop();
+
   try {
-    await visualLoop.play();
+    await activeVisualLoop.play();
     showVideoVisual();
+    startVisualLoopWatcher();
   } catch (error) {
     showVisualFallback();
   }
@@ -693,13 +807,7 @@ progressBar.addEventListener("input", () => {
   setRangeProgress(Number(progressBar.value));
 });
 
-visualLoop.addEventListener("error", showVisualFallback);
-visualLoop.querySelectorAll("source").forEach((source) => {
-  source.addEventListener("error", showVisualFallback);
-});
-
-visualLoop.addEventListener("loadeddata", showVideoVisual);
-
+setupSeamlessVisualLoop();
 updatePlaybackModeButton();
 setShareTarget("link");
 setPlaybackSpeed(1);

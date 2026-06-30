@@ -635,6 +635,18 @@ video {
   object-fit: cover;
 }
 
+.player-media-wrap .player-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .08s linear;
+}
+
+.player-media-wrap .player-video.is-active {
+  opacity: 1;
+}
+
 .fallback-media {
   position: absolute;
   inset: 0;
@@ -649,6 +661,7 @@ video {
   opacity: 1;
 }
 
+.player-media-wrap.use-fallback .player-video,
 .player-media-wrap.use-fallback video {
   opacity: 0;
 }
