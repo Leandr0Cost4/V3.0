@@ -42,7 +42,7 @@ let playbackModeIndex = 0;
 let playbackMode = playbackModes[playbackModeIndex];
 let shareTarget = "link";
 let playbackSpeed = 1;
-const IMAGE_VERSION = "images-refresh-1";
+const IMAGE_VERSION = "music-cover-2";
 
 function versionedImage(path) {
   return `${path}?v=${IMAGE_VERSION}`;
