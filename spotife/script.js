@@ -5,6 +5,7 @@ const SPLASH_DURATION_MS = 4600;
 const screens = {
   home: document.getElementById("homeScreen"),
   playlist: document.getElementById("playlistScreen"),
+  minhaPlaylist: document.getElementById("minhaPlaylistScreen"),
   player: document.getElementById("playerScreen")
 };
 
@@ -23,7 +24,21 @@ const progressBar = document.getElementById("progressBar");
 const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
-const spotifyPlay = document.querySelector(".spotify-play");
+const playlistToggleButtons = document.querySelectorAll("[data-playlist-toggle]");
+const visualFallback = document.getElementById("visualFallback");
+const songTitle = document.querySelector(".song-title-area h1");
+const songArtist = document.querySelector(".song-title-area p");
+const playerTopbarName = document.querySelector(".player-topbar span");
+const playerBackButton = document.querySelector(".player-topbar [data-open]");
+const artistCard = document.querySelector(".artist-card");
+const miniCover = document.querySelector(".mini-player img");
+const miniTitle = document.querySelector(".mini-copy strong");
+const miniArtist = document.querySelector(".mini-copy small");
+const skipButtons = document.querySelectorAll("[data-skip]");
+const sharePreviewCover = document.querySelector(".share-preview img");
+const sharePreviewTitle = document.querySelector(".share-preview strong");
+const sharePreviewText = document.querySelector(".share-preview small");
+const sharePreview = document.querySelector(".share-preview");
 const playbackModeButtons = document.querySelectorAll("[data-playback-mode-toggle]");
 const shareSheet = document.querySelector("[data-share-sheet]");
 const speedSheet = document.querySelector("[data-speed-sheet]");
@@ -41,6 +56,7 @@ const playbackModes = ["shuffle", "repeat", "order"];
 let playbackModeIndex = 0;
 let playbackMode = playbackModes[playbackModeIndex];
 let shareTarget = "link";
+let shareContext = "playlist";
 let playbackSpeed = 1;
 const IMAGE_VERSION = "music-cover-2";
 
@@ -143,14 +159,14 @@ function normalizePlaylistColor(color) {
   };
 }
 
-function applyPlaylistColor(color) {
+function applyPlaylistColor(color, target = app) {
   const accent = normalizePlaylistColor(color);
   const accentMid = shadeColor(accent, 0.58);
   const accentDark = shadeColor(accent, 0.32);
 
-  app.style.setProperty("--playlist-accent", rgbToCss(accent));
-  app.style.setProperty("--playlist-accent-mid", rgbToCss(accentMid));
-  app.style.setProperty("--playlist-accent-dark", rgbToCss(accentDark));
+  target.style.setProperty("--playlist-accent", rgbToCss(accent));
+  target.style.setProperty("--playlist-accent-mid", rgbToCss(accentMid));
+  target.style.setProperty("--playlist-accent-dark", rgbToCss(accentDark));
 }
 
 function applyCoverColor(color) {
@@ -218,8 +234,60 @@ const song = {
   title: "Aquele gol que n\u00e3o valeu",
   artist: "Leandro Dias",
   album: "Minha melhor mem\u00f3ria",
-  cover: versionedImage("imagens/capa-musica.jpg")
+  cover: versionedImage("imagens/capa-musica.jpg"),
+  src: "musica/Aquele_gol_que_nao_valeu.mp3",
+  hasVideo: true,
+  hasArtistCard: true
 };
+
+function minhaPlaylistTrack(number, title, artist) {
+  return {
+    title,
+    artist,
+    album: "Minha playlist",
+    cover: versionedImage(`minha-playlist/capas/musica${number}.jpg`),
+    src: `minha-playlist/musicas/musica${number}.mp3`,
+    hasVideo: false,
+    hasArtistCard: false
+  };
+}
+
+const playlists = {
+  playlist: {
+    name: "Minha melhor mem\u00f3ria",
+    cover: playlist.cover,
+    hash: "#playlist",
+    tracks: [song]
+  },
+  minhaPlaylist: {
+    name: "Minha playlist",
+    cover: versionedImage("imagens/capa-minha-playlist.jpg"),
+    hash: "#minha-playlist",
+    tracks: [
+      minhaPlaylistTrack(1, "Mulher Feita", "PROJOTA"),
+      minhaPlaylistTrack(2, "Baixinha", "CHININHA & L7NNON"),
+      minhaPlaylistTrack(3, "Ela s\u00f3 quer Paz", "PROJOTA"),
+      minhaPlaylistTrack(4, "Minha Vida", "Italo Melo ft. Junior Lord"),
+      minhaPlaylistTrack(5, "Amor Livre", "Filipe Ret"),
+      minhaPlaylistTrack(6, "C\u00f3pia Proibida", "L\u00e9o Foguete")
+    ]
+  }
+};
+
+let currentPlaylistKey = "playlist";
+let currentTrackIndex = 0;
+
+function currentPlaylist() {
+  return playlists[currentPlaylistKey];
+}
+
+function currentTrack() {
+  return currentPlaylist().tracks[currentTrackIndex];
+}
+
+function hasQueue() {
+  return currentPlaylist().tracks.length > 1;
+}
 
 function setActiveFilter(filter) {
   filterTabs.forEach((tab) => {
@@ -236,12 +304,7 @@ function showHomePanel(panelName) {
 function setHomeFilter(filter) {
   setActiveFilter(filter);
 
-  if (filter === "playlists") {
-    setScreen("playlist");
-    return;
-  }
-
-  showHomePanel(filter === "music" ? "music" : "all");
+  showHomePanel(["music", "playlists"].includes(filter) ? filter : "all");
   setScreen("home");
 }
 
@@ -249,6 +312,12 @@ function applyInitialRoute() {
   if (window.location.hash === "#playlist") {
     setActiveFilter("playlists");
     setScreen("playlist");
+    return;
+  }
+
+  if (window.location.hash === "#minha-playlist") {
+    setActiveFilter("playlists");
+    setScreen("minhaPlaylist");
     return;
   }
 
@@ -296,10 +365,154 @@ function markPlaylistStarted() {
 function syncPlayState(playing) {
   isPlaying = playing;
   mainPlay.classList.toggle("is-playing", playing);
-  spotifyPlay.classList.toggle("is-playing", playing);
   miniToggle.classList.toggle("is-playing", playing);
   mainPlay.setAttribute("aria-label", playing ? "Pausar m\u00fasica" : "Tocar m\u00fasica");
-  spotifyPlay.setAttribute("aria-label", playing ? "Pausar playlist" : "Tocar playlist");
+
+  playlistToggleButtons.forEach((button) => {
+    const playingThisPlaylist = playing && button.dataset.playlistToggle === currentPlaylistKey;
+    button.classList.toggle("is-playing", playingThisPlaylist);
+    button.setAttribute("aria-label", playingThisPlaylist ? "Pausar playlist" : "Tocar playlist");
+  });
+}
+
+function renderTrackList() {
+  document.querySelectorAll("[data-track-list]").forEach((list) => {
+    const playlistKey = list.dataset.trackList;
+
+    playlists[playlistKey].tracks.forEach((track, index) => {
+      const row = document.createElement("button");
+      row.className = "track-row";
+      row.type = "button";
+      row.dataset.trackIndex = index;
+      row.setAttribute("aria-label", `Tocar ${track.title}`);
+
+      const cover = document.createElement("img");
+      cover.src = track.cover;
+      cover.alt = `Capa da m\u00fasica ${track.title}`;
+
+      const copy = document.createElement("span");
+      const title = document.createElement("strong");
+      const artist = document.createElement("small");
+      title.textContent = track.title;
+      artist.textContent = track.artist;
+      copy.append(title, artist);
+
+      row.append(cover, copy);
+      row.insertAdjacentHTML("beforeend", `<svg class="row-more" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>`);
+      row.addEventListener("click", () => playTrack(playlistKey, index));
+      list.append(row);
+    });
+  });
+}
+
+function renderCurrentTrack() {
+  const track = currentTrack();
+  const playlistInfo = currentPlaylist();
+
+  songTitle.textContent = track.title;
+  songArtist.textContent = track.artist;
+  miniTitle.textContent = track.title;
+  miniArtist.textContent = track.artist;
+  miniCover.src = track.cover;
+  playerTopbarName.textContent = playlistInfo.name;
+  playerBackButton.dataset.open = currentPlaylistKey;
+  screens.player.setAttribute("aria-label", `Player ${track.title}`);
+  artistCard.hidden = !track.hasArtistCard;
+
+  visualFallback.src = track.cover;
+  visualFallback.alt = `Visual da m\u00fasica ${track.title}`;
+  mediaWrap.classList.toggle("is-photo", !track.hasVideo);
+
+  if (!track.hasVideo) {
+    [visualLoop, visualLoopCopy].forEach((video) => {
+      if (video) {
+        video.pause();
+      }
+    });
+    showVisualFallback();
+  } else if (app.dataset.screen === "player") {
+    startVisualLoop();
+  }
+
+  skipButtons.forEach((button) => {
+    button.classList.toggle("is-disabled", !hasQueue());
+  });
+
+  document.querySelectorAll("[data-track-list]").forEach((list) => {
+    list.querySelectorAll(".track-row").forEach((row) => {
+      row.classList.toggle("is-current", list.dataset.trackList === currentPlaylistKey && Number(row.dataset.trackIndex) === currentTrackIndex);
+    });
+  });
+
+  extractCoverColor(track.cover, applyPlayerColor);
+  syncPlayState(isPlaying);
+}
+
+function loadTrack(playlistKey, index) {
+  const track = playlists[playlistKey].tracks[index];
+
+  if (track === currentTrack()) {
+    return;
+  }
+
+  currentPlaylistKey = playlistKey;
+  currentTrackIndex = index;
+  audio.src = track.src;
+  audio.playbackRate = playbackSpeed;
+  progressBar.value = 0;
+  currentTime.textContent = "0:00";
+  durationTime.textContent = "0:00";
+  setRangeProgress(0);
+  renderCurrentTrack();
+}
+
+function playTrack(playlistKey, index) {
+  loadTrack(playlistKey, index);
+  setScreen("player");
+  playSong();
+}
+
+function nextTrackIndex() {
+  const total = currentPlaylist().tracks.length;
+
+  if (playbackMode === "shuffle" && total > 1) {
+    let index;
+    do {
+      index = Math.floor(Math.random() * total);
+    } while (index === currentTrackIndex);
+    return index;
+  }
+
+  return (currentTrackIndex + 1) % total;
+}
+
+function nextTrack() {
+  if (!hasQueue()) {
+    return;
+  }
+
+  loadTrack(currentPlaylistKey, nextTrackIndex());
+  playSong();
+}
+
+function previousTrack() {
+  if (!hasQueue()) {
+    return;
+  }
+
+  if (audio.currentTime > 3) {
+    audio.currentTime = 0;
+    return;
+  }
+
+  const total = currentPlaylist().tracks.length;
+  loadTrack(currentPlaylistKey, (currentTrackIndex - 1 + total) % total);
+  playSong();
+}
+
+function firstTrackIndex(playlistKey) {
+  const total = playlists[playlistKey].tracks.length;
+  return playbackMode === "shuffle" && total > 1 ? Math.floor(Math.random() * total) : 0;
 }
 
 async function playSong() {
@@ -326,14 +539,19 @@ function toggleSong() {
   }
 }
 
-function handlePlaylistPlayButton() {
-  if (isPlaying) {
-    pauseSong();
+function handlePlaylistPlayButton(playlistKey) {
+  if (playlistKey === currentPlaylistKey) {
+    if (isPlaying) {
+      pauseSong();
+      return;
+    }
+
+    setScreen("player");
+    playSong();
     return;
   }
 
-  setScreen("player");
-  playSong();
+  playTrack(playlistKey, firstTrackIndex(playlistKey));
 }
 
 function updatePlaybackModeButton() {
@@ -360,6 +578,10 @@ function getBaseShareUrl() {
 function getShareUrl() {
   const baseUrl = getBaseShareUrl();
 
+  if (shareContext !== "playlist" && shareTarget !== "link") {
+    return `${baseUrl}${playlists[shareContext].hash}`;
+  }
+
   if (shareTarget === "playlist") {
     return `${baseUrl}#playlist`;
   }
@@ -372,6 +594,18 @@ function getShareUrl() {
 }
 
 function getShareData() {
+  if (shareContext !== "playlist") {
+    const sharedPlaylist = playlists[shareContext];
+    const sharedTrack = currentPlaylistKey === shareContext ? currentTrack() : sharedPlaylist.tracks[0];
+    const sharedName = shareTarget === "music" ? sharedTrack.title : sharedPlaylist.name;
+
+    return {
+      title: `${sharedName} - SpotiF\u00ea`,
+      text: `Escutar ${sharedName} no SpotiF\u00ea.`,
+      url: getShareUrl()
+    };
+  }
+
   const title = shareTarget === "music"
     ? "Aquele gol que n\u00e3o valeu - SpotiF\u00ea"
     : "Minha melhor mem\u00f3ria - SpotiF\u00ea";
@@ -381,6 +615,21 @@ function getShareData() {
     text: "Escutar Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
     url: getShareUrl()
   };
+}
+
+function renderSharePreview() {
+  const sharedPlaylist = playlists[shareContext];
+  const isOriginal = shareContext === "playlist";
+
+  sharePreviewCover.src = isOriginal ? "imagens/capa-playlist.jpg?v=images-refresh-1" : sharedPlaylist.cover;
+  sharePreviewCover.alt = `Capa da playlist ${sharedPlaylist.name}`;
+  sharePreviewTitle.textContent = sharedPlaylist.name;
+  sharePreviewText.textContent = isOriginal
+    ? "Aquele gol que n\u00e3o valeu \u2022 Leandro Dias"
+    : `${sharedPlaylist.tracks.length} m\u00fasicas \u2022 Leandro Dias`;
+
+  const accent = isOriginal ? "" : screens[shareContext].style.getPropertyValue("--playlist-accent");
+  sharePreview.style.setProperty("--playlist-accent", accent);
 }
 
 function setShareTarget(target) {
@@ -401,10 +650,13 @@ function setShareStatus(message) {
   shareStatus.textContent = message;
 }
 
-function openShareSheet() {
+function openShareSheet(context = "playlist") {
   if (!shareSheet) {
     return;
   }
+
+  shareContext = context;
+  renderSharePreview();
 
   shareSheet.classList.add("is-open");
   shareSheet.setAttribute("aria-hidden", "false");
@@ -442,6 +694,7 @@ function updateSpeedButtons() {
 
 function setPlaybackSpeed(speed) {
   playbackSpeed = speed;
+  audio.defaultPlaybackRate = speed;
   audio.playbackRate = speed;
   [visualLoop, visualLoopCopy].forEach((video) => {
     if (video) {
@@ -548,6 +801,10 @@ function showVisualFallback() {
 }
 
 function showVideoVisual() {
+  if (!currentTrack().hasVideo) {
+    return;
+  }
+
   mediaWrap.classList.remove("use-fallback");
 }
 
@@ -652,7 +909,7 @@ function startVisualLoopWatcher() {
 }
 
 async function startVisualLoop() {
-  if (!visualLoop) {
+  if (!visualLoop || !currentTrack().hasVideo) {
     return;
   }
 
@@ -668,8 +925,15 @@ async function startVisualLoop() {
 }
 
 function openMusicPlayer() {
-  setScreen("player");
-  playSong();
+  playTrack("playlist", 0);
+}
+
+function setMediaSessionHandler(action, handler) {
+  try {
+    navigator.mediaSession.setActionHandler(action, handler);
+  } catch (error) {
+    // Navegador sem suporte a essa ação.
+  }
 }
 
 function updateMediaSession() {
@@ -677,17 +941,21 @@ function updateMediaSession() {
     return;
   }
 
+  const track = currentTrack();
+
   navigator.mediaSession.metadata = new MediaMetadata({
-    title: song.title,
-    artist: song.artist,
-    album: song.album,
+    title: track.title,
+    artist: track.artist,
+    album: track.album,
     artwork: [
-      { src: song.cover, sizes: "512x512", type: "image/jpeg" }
+      { src: track.cover, sizes: "512x512", type: "image/jpeg" }
     ]
   });
 
-  navigator.mediaSession.setActionHandler("play", playSong);
-  navigator.mediaSession.setActionHandler("pause", pauseSong);
+  setMediaSessionHandler("play", playSong);
+  setMediaSessionHandler("pause", pauseSong);
+  setMediaSessionHandler("previoustrack", hasQueue() ? previousTrack : null);
+  setMediaSessionHandler("nexttrack", hasQueue() ? nextTrack : null);
 }
 
 document.querySelectorAll("[data-open]").forEach((button) => {
@@ -697,7 +965,7 @@ document.querySelectorAll("[data-open]").forEach((button) => {
       return;
     }
 
-    if (button.dataset.open === "playlist") {
+    if (playlists[button.dataset.open]) {
       setActiveFilter("playlists");
     }
 
@@ -715,7 +983,15 @@ document.querySelectorAll("[data-play-open]").forEach((button) => {
   button.addEventListener("click", openMusicPlayer);
 });
 
-spotifyPlay.addEventListener("click", handlePlaylistPlayButton);
+playlistToggleButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    handlePlaylistPlayButton(button.dataset.playlistToggle);
+  });
+});
+
+skipButtons.forEach((button) => {
+  button.addEventListener("click", button.dataset.skip === "next" ? nextTrack : previousTrack);
+});
 
 playbackModeButtons.forEach((button) => {
   button.addEventListener("click", cyclePlaybackMode);
@@ -738,7 +1014,10 @@ if (speedSheet) {
   });
 }
 document.querySelectorAll("[data-share-open]").forEach((button) => {
-  button.addEventListener("click", openShareSheet);
+  button.addEventListener("click", () => {
+    const fromPlayer = Boolean(button.closest("#playerScreen"));
+    openShareSheet(button.dataset.shareContext || (fromPlayer ? currentPlaylistKey : "playlist"));
+  });
 });
 
 shareTargetButtons.forEach((button) => {
@@ -794,6 +1073,11 @@ audio.addEventListener("ended", () => {
     return;
   }
 
+  if (hasQueue()) {
+    nextTrack();
+    return;
+  }
+
   syncPlayState(false);
   audio.currentTime = 0;
   setRangeProgress(0);
@@ -808,12 +1092,14 @@ progressBar.addEventListener("input", () => {
 });
 
 setupSeamlessVisualLoop();
+renderTrackList();
 updatePlaybackModeButton();
 setShareTarget("link");
 setPlaybackSpeed(1);
 applyInitialRoute();
 extractCoverColor(song.cover, applyPlayerColor);
 extractCoverColor(playlist.cover, applyPlaylistColor);
+extractCoverColor(playlists.minhaPlaylist.cover, (color) => applyPlaylistColor(color, screens.minhaPlaylist));
 setRangeProgress(0);
 updateMediaSession();
 

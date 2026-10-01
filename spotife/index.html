@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=seamless-video-1">
+  <link rel="stylesheet" href="style.css?v=minha-playlist-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -52,6 +52,10 @@
           <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
           <span>Minha melhor mem&oacute;ria</span>
         </button>
+        <button class="quick-card" type="button" data-open="minhaPlaylist">
+          <img src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
+          <span>Minha playlist</span>
+        </button>
       </section>
 
       <section class="home-section" aria-labelledby="made-for-title">
@@ -60,6 +64,12 @@
           <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
           <span>Playlist</span>
           <strong>Minha melhor mem&oacute;ria</strong>
+          <small>Leandro Dias</small>
+        </button>
+        <button class="big-card" type="button" data-open="minhaPlaylist">
+          <img src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
+          <span>Playlist</span>
+          <strong>Minha playlist</strong>
           <small>Leandro Dias</small>
         </button>
       </section>
@@ -86,6 +96,22 @@
               <small>Leandro Dias</small>
             </span>
           </button>
+        </section>
+      </div>
+
+      <div class="home-panel" data-home-panel="playlists">
+        <section class="home-section bottom-space" aria-labelledby="playlists-title">
+          <h1 id="playlists-title">Playlists</h1>
+          <div class="quick-grid">
+            <button class="quick-card" type="button" data-open="playlist">
+              <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
+              <span>Minha melhor mem&oacute;ria</span>
+            </button>
+            <button class="quick-card" type="button" data-open="minhaPlaylist">
+              <img src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
+              <span>Minha playlist</span>
+            </button>
+          </div>
         </section>
       </div>
     </section>
@@ -128,7 +154,7 @@
           <button class="shuffle-button" type="button" data-playback-mode-toggle aria-label="Modo aleat&oacute;rio">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>
           </button>
-          <button class="spotify-play" type="button" data-playlist-toggle aria-label="Tocar playlist">
+          <button class="spotify-play" type="button" data-playlist-toggle="playlist" aria-label="Tocar playlist">
             <svg class="play-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
             <svg class="pause-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
           </button>
@@ -149,6 +175,52 @@
         </span>
         <svg class="row-more" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>
       </button>
+    </section>
+
+    <section class="screen screen-playlist screen-minha-playlist" id="minhaPlaylistScreen" aria-label="Playlist Minha playlist">
+      <header class="screen-topbar">
+        <button class="plain-icon" type="button" data-open="home" aria-label="Voltar para o in&iacute;cio">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.7 4.3 8 12l7.7 7.7-1.9 1.9L4.2 12l9.6-9.6 1.9 1.9Z"/></svg>
+        </button>
+      </header>
+
+      <div class="playlist-hero">
+        <img class="playlist-cover" src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
+        <h1>Minha playlist</h1>
+        <div class="owner-row">
+          <span class="owner-avatar">L</span>
+          <strong>Leandro Dias</strong>
+        </div>
+        <p class="playlist-meta"><span></span>6 m&uacute;sicas</p>
+      </div>
+
+      <div class="playlist-actions">
+        <div class="left-actions">
+          <button class="circle-muted" type="button" aria-label="Adicionar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 11V4h2v7h7v2h-7v7h-2v-7H4v-2h7Z"/></svg>
+          </button>
+          <button class="circle-muted" type="button" aria-label="Baixar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4h2v9.2l3.6-3.6L18 11l-6 6-6-6 1.4-1.4 3.6 3.6V4Zm-5 15h12v2H6v-2Z"/></svg>
+          </button>
+          <button class="circle-muted" type="button" data-share-open data-share-context="minhaPlaylist" aria-label="Compartilhar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16.1c-.8 0-1.6.3-2.1.9L8.9 13c.1-.3.1-.6.1-1s0-.7-.1-1l7-4c.6.6 1.3.9 2.1.9a3 3 0 1 0-3-3c0 .3.1.6.1.8l-7 4.1a3 3 0 1 0 0 4.4l7 4.1c-.1.2-.1.5-.1.8a3 3 0 1 0 3-3Z"/></svg>
+          </button>
+          <button class="circle-muted" type="button" aria-label="Mais op&ccedil;&otilde;es">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>
+          </button>
+        </div>
+        <div class="right-actions">
+          <button class="shuffle-button" type="button" data-playback-mode-toggle aria-label="Modo aleat&oacute;rio">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>
+          </button>
+          <button class="spotify-play" type="button" data-playlist-toggle="minhaPlaylist" aria-label="Tocar playlist">
+            <svg class="play-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
+            <svg class="pause-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="track-list" data-track-list="minhaPlaylist"></div>
     </section>
 
     <section class="screen screen-player" id="playerScreen" aria-label="Player Aquele gol que n&atilde;o valeu">
@@ -191,14 +263,14 @@
         <button class="green-icon" type="button" data-playback-mode-toggle aria-label="Modo aleat&oacute;rio">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5h-2V6.4l-4.6 4.6L13 9.6 17.6 5H16V3ZM4 7h3.2c1.8 0 3.1.8 4.4 2.7l-1.5 1.5C9 9.6 8.2 9 7.2 9H4V7Zm9.1 7.4 1.4-1.4 4.5 4.6V16h2v5h-5v-2h1.6l-4.5-4.6ZM4 15h3.2c1 0 1.8-.6 2.9-2.2l1.5 1.5C10.3 16.2 9 17 7.2 17H4v-2Z"/></svg>
         </button>
-        <button class="skip-icon is-disabled" type="button" aria-label="Anterior">
+        <button class="skip-icon is-disabled" type="button" data-skip="prev" aria-label="Anterior">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6h3v12H6V6Zm4 6 9-6v12l-9-6Z"/></svg>
         </button>
         <button class="large-play" id="mainPlay" type="button" aria-label="Tocar ou pausar m&uacute;sica">
           <svg class="play-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
           <svg class="pause-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z"/></svg>
         </button>
-        <button class="skip-icon is-disabled" type="button" aria-label="Pr&oacute;xima">
+        <button class="skip-icon is-disabled" type="button" data-skip="next" aria-label="Pr&oacute;xima">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6h3v12h-3V6ZM5 18V6l9 6-9 6Z"/></svg>
         </button>
         <button class="timer-icon" type="button" data-speed-open aria-label="Velocidade de reprodu&ccedil;&atilde;o">
@@ -322,7 +394,7 @@
     <audio id="audioPlayer" preload="metadata" src="musica/Aquele_gol_que_nao_valeu.mp3"></audio>
   </main>
 
-  <script src="script.js?v=music-cover-2"></script>
+  <script src="script.js?v=minha-playlist-1"></script>
 </body>
 </html>
 

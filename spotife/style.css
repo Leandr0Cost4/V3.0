@@ -1387,3 +1387,25 @@ input[type="range"]::-webkit-slider-thumb {
     gap: 10px;
   }
 }
+
+/* Minha playlist */
+.home-section .big-card + .big-card {
+  margin-top: 22px;
+}
+
+.track-list {
+  display: grid;
+  gap: 10px;
+}
+
+.track-list .track-row.is-current strong {
+  color: var(--spotify-green);
+}
+
+.player-media-wrap.is-photo {
+  background: rgba(0,0,0,.28);
+}
+
+.player-media-wrap.is-photo .fallback-media {
+  object-fit: contain;
+}
