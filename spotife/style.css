@@ -1389,8 +1389,37 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* Minha playlist */
-.home-section .big-card + .big-card {
-  margin-top: 22px;
+.big-card-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.big-card-row .big-card,
+.big-card-row .big-card img {
+  width: 100%;
+}
+
+.big-card-row .big-card img {
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.music-list {
+  display: grid;
+  gap: 8px;
+}
+
+.owner-avatar-brand {
+  background: transparent;
+  color: var(--spotify-green);
+}
+
+.owner-avatar-brand .brand-symbol {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
 }
 
 .track-list {

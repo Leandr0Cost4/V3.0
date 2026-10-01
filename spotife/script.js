@@ -30,7 +30,8 @@ const songTitle = document.querySelector(".song-title-area h1");
 const songArtist = document.querySelector(".song-title-area p");
 const playerTopbarName = document.querySelector(".player-topbar span");
 const playerBackButton = document.querySelector(".player-topbar [data-open]");
-const artistCard = document.querySelector(".artist-card");
+const recentRow = document.querySelector("[data-recent-track]");
+const RECENT_TRACK_KEY = "spotife:ultima-musica";
 const miniCover = document.querySelector(".mini-player img");
 const miniTitle = document.querySelector(".mini-copy strong");
 const miniArtist = document.querySelector(".mini-copy small");
@@ -232,12 +233,11 @@ const playlist = {
 
 const song = {
   title: "Aquele gol que n\u00e3o valeu",
-  artist: "Leandro Dias",
+  artist: "SpotiF\u00ea",
   album: "Minha melhor mem\u00f3ria",
   cover: versionedImage("imagens/capa-musica.jpg"),
   src: "musica/Aquele_gol_que_nao_valeu.mp3",
-  hasVideo: true,
-  hasArtistCard: true
+  hasVideo: true
 };
 
 function minhaPlaylistTrack(number, title, artist) {
@@ -247,8 +247,7 @@ function minhaPlaylistTrack(number, title, artist) {
     album: "Minha playlist",
     cover: versionedImage(`minha-playlist/capas/musica${number}.jpg`),
     src: `minha-playlist/musicas/musica${number}.mp3`,
-    hasVideo: false,
-    hasArtistCard: false
+    hasVideo: false
   };
 }
 
@@ -405,6 +404,66 @@ function renderTrackList() {
   });
 }
 
+function renderAllTracks() {
+  const list = document.querySelector("[data-all-tracks]");
+
+  Object.entries(playlists).forEach(([playlistKey, playlistInfo]) => {
+    playlistInfo.tracks.forEach((track, index) => {
+      const row = document.createElement("button");
+      row.className = "recent-row";
+      row.type = "button";
+
+      const cover = document.createElement("img");
+      cover.src = track.cover;
+      cover.alt = `Capa da música ${track.title}`;
+
+      const copy = document.createElement("span");
+      const title = document.createElement("strong");
+      const subtitle = document.createElement("small");
+      title.textContent = track.title;
+      subtitle.textContent = `${track.artist} • ${playlistInfo.name}`;
+      copy.append(title, subtitle);
+
+      row.append(cover, copy);
+      row.addEventListener("click", () => playTrack(playlistKey, index));
+      list.append(row);
+    });
+  });
+}
+
+let recentTrack = { playlistKey: "playlist", index: 0 };
+
+function loadRecentTrack() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(RECENT_TRACK_KEY));
+    if (saved && playlists[saved.playlistKey] && playlists[saved.playlistKey].tracks[saved.index]) {
+      recentTrack = { playlistKey: saved.playlistKey, index: saved.index };
+    }
+  } catch (error) {
+    // Sem memória salva: fica a música padrão.
+  }
+}
+
+function renderRecentTrack() {
+  const track = playlists[recentTrack.playlistKey].tracks[recentTrack.index];
+
+  recentRow.querySelector("img").src = track.cover;
+  recentRow.querySelector("strong").textContent = track.title;
+  recentRow.querySelector("small").textContent = track.artist;
+  recentRow.setAttribute("aria-label", `Tocar ${track.title}`);
+}
+
+function saveRecentTrack() {
+  recentTrack = { playlistKey: currentPlaylistKey, index: currentTrackIndex };
+  renderRecentTrack();
+
+  try {
+    localStorage.setItem(RECENT_TRACK_KEY, JSON.stringify(recentTrack));
+  } catch (error) {
+    // Navegador sem armazenamento: só vale até fechar a página.
+  }
+}
+
 function renderCurrentTrack() {
   const track = currentTrack();
   const playlistInfo = currentPlaylist();
@@ -417,7 +476,6 @@ function renderCurrentTrack() {
   playerTopbarName.textContent = playlistInfo.name;
   playerBackButton.dataset.open = currentPlaylistKey;
   screens.player.setAttribute("aria-label", `Player ${track.title}`);
-  artistCard.hidden = !track.hasArtistCard;
 
   visualFallback.src = track.cover;
   visualFallback.alt = `Visual da m\u00fasica ${track.title}`;
@@ -521,6 +579,7 @@ async function playSong() {
     markPlaylistStarted();
     syncPlayState(true);
     updateMediaSession();
+    saveRecentTrack();
   } catch (error) {
     syncPlayState(false);
   }
@@ -625,8 +684,8 @@ function renderSharePreview() {
   sharePreviewCover.alt = `Capa da playlist ${sharedPlaylist.name}`;
   sharePreviewTitle.textContent = sharedPlaylist.name;
   sharePreviewText.textContent = isOriginal
-    ? "Aquele gol que n\u00e3o valeu \u2022 Leandro Dias"
-    : `${sharedPlaylist.tracks.length} m\u00fasicas \u2022 Leandro Dias`;
+    ? "Aquele gol que n\u00e3o valeu"
+    : `${sharedPlaylist.tracks.length} m\u00fasicas`;
 
   const accent = isOriginal ? "" : screens[shareContext].style.getPropertyValue("--playlist-accent");
   sharePreview.style.setProperty("--playlist-accent", accent);
@@ -979,6 +1038,10 @@ filterTabs.forEach((tab) => {
   });
 });
 
+recentRow.addEventListener("click", () => {
+  playTrack(recentTrack.playlistKey, recentTrack.index);
+});
+
 document.querySelectorAll("[data-play-open]").forEach((button) => {
   button.addEventListener("click", openMusicPlayer);
 });
@@ -1093,6 +1156,9 @@ progressBar.addEventListener("input", () => {
 
 setupSeamlessVisualLoop();
 renderTrackList();
+renderAllTracks();
+loadRecentTrack();
+renderRecentTrack();
 updatePlaybackModeButton();
 setShareTarget("link");
 setPlaybackSpeed(1);

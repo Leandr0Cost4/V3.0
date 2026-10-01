@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>SpotiF&ecirc;</title>
-  <link rel="stylesheet" href="style.css?v=minha-playlist-1">
+  <link rel="stylesheet" href="style.css?v=sem-autor-1">
 </head>
 <body>
   <main class="phone-app is-splashing" data-screen="home">
@@ -60,27 +60,29 @@
 
       <section class="home-section" aria-labelledby="made-for-title">
         <h1 id="made-for-title">Feito para Fernanda</h1>
-        <button class="big-card" type="button" data-open="playlist">
-          <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
-          <span>Playlist</span>
-          <strong>Minha melhor mem&oacute;ria</strong>
-          <small>Leandro Dias</small>
-        </button>
-        <button class="big-card" type="button" data-open="minhaPlaylist">
-          <img src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
-          <span>Playlist</span>
-          <strong>Minha playlist</strong>
-          <small>Leandro Dias</small>
-        </button>
+        <div class="big-card-row">
+          <button class="big-card" type="button" data-open="playlist">
+            <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
+            <span>Playlist</span>
+            <strong>Minha melhor mem&oacute;ria</strong>
+            <small>SpotiF&ecirc;</small>
+          </button>
+          <button class="big-card" type="button" data-open="minhaPlaylist">
+            <img src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
+            <span>Playlist</span>
+            <strong>Minha playlist</strong>
+            <small>SpotiF&ecirc;</small>
+          </button>
+        </div>
       </section>
 
       <section class="home-section bottom-space" aria-labelledby="recent-title">
         <h2 id="recent-title">Tocado recentemente</h2>
-        <button class="recent-row" type="button" data-play-open="player">
+        <button class="recent-row" type="button" data-recent-track>
           <img src="imagens/capa-musica.jpg?v=music-cover-2" alt="">
           <span>
             <strong>Aquele gol que n&atilde;o valeu</strong>
-            <small>Leandro Dias</small>
+            <small>SpotiF&ecirc;</small>
           </span>
         </button>
       </section>
@@ -89,13 +91,7 @@
       <div class="home-panel" data-home-panel="music">
         <section class="home-section music-only bottom-space" aria-labelledby="music-title">
           <h1 id="music-title">M&uacute;sicas</h1>
-          <button class="recent-row" type="button" data-play-open="player">
-            <img src="imagens/capa-musica.jpg?v=music-cover-2" alt="Capa da m&uacute;sica Aquele gol que n&atilde;o valeu">
-            <span>
-              <strong>Aquele gol que n&atilde;o valeu</strong>
-              <small>Leandro Dias</small>
-            </span>
-          </button>
+          <div class="music-list" data-all-tracks></div>
         </section>
       </div>
 
@@ -127,11 +123,10 @@
         <img class="playlist-cover" src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
         <h1>Minha melhor mem&oacute;ria</h1>
         <div class="owner-row">
-          <span class="owner-avatar">L</span>
-          <strong>Leandro Dias</strong>
+          <span class="owner-avatar owner-avatar-brand"><svg class="brand-symbol" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"></circle><path d="M17 24.5c9.6-2.9 21.9-2 30.6 3"></path><path d="M19.2 32.2c7.8-2.2 17.7-1.4 24.6 2.4"></path><path d="M21.1 39.2c5.9-1.5 13.2-.9 18.4 2"></path></svg></span>
+          <strong>SpotiF&ecirc;</strong>
         </div>
         <p class="playlist-description">O gol n&atilde;o valeu, mas a mem&oacute;ria ficou. Uma tarde no est&aacute;dio, uma companhia especial e um momento que merecia virar m&uacute;sica.</p>
-        <p class="credits-line">Cantor, compositor e produtor: <strong>Leandro Dias</strong></p>
         <p class="playlist-meta"><span></span>1 m&uacute;sica</p>
       </div>
 
@@ -171,7 +166,7 @@
         <img src="imagens/capa-musica.jpg?v=music-cover-2" alt="Capa da m&uacute;sica Aquele gol que n&atilde;o valeu">
         <span>
           <strong>Aquele gol que n&atilde;o valeu</strong>
-          <small>Leandro Dias</small>
+          <small>SpotiF&ecirc;</small>
         </span>
         <svg class="row-more" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>
       </button>
@@ -188,8 +183,8 @@
         <img class="playlist-cover" src="imagens/capa-minha-playlist.jpg?v=minha-playlist-1" alt="Capa da playlist Minha playlist">
         <h1>Minha playlist</h1>
         <div class="owner-row">
-          <span class="owner-avatar">L</span>
-          <strong>Leandro Dias</strong>
+          <span class="owner-avatar owner-avatar-brand"><svg class="brand-symbol" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"></circle><path d="M17 24.5c9.6-2.9 21.9-2 30.6 3"></path><path d="M19.2 32.2c7.8-2.2 17.7-1.4 24.6 2.4"></path><path d="M21.1 39.2c5.9-1.5 13.2-.9 18.4 2"></path></svg></span>
+          <strong>SpotiF&ecirc;</strong>
         </div>
         <p class="playlist-meta"><span></span>6 m&uacute;sicas</p>
       </div>
@@ -244,7 +239,7 @@
       <section class="song-heading" aria-label="M&uacute;sica atual">
         <div class="song-title-area">
           <h1>Aquele gol que n&atilde;o valeu</h1>
-          <p>Leandro Dias</p>
+          <p>SpotiF&ecirc;</p>
         </div>
         <button class="saved-check is-saved" type="button" aria-label="M&uacute;sica salva">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.2 16.2 4.9 12l-1.4 1.4 5.7 5.7L21 7.3l-1.4-1.4L9.2 16.2Z"/></svg>
@@ -285,28 +280,13 @@
           <button type="button" aria-label="Fila"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h10v2H4v-2Z"/></svg></button>
         </span>
       </div>
-
-      <section class="artist-card" aria-labelledby="artist-title">
-        <h2 id="artist-title">Sobre o artista</h2>
-        <img src="imagens/sobre-artista.jpg?v=images-refresh-1" alt="Foto de Leandro Dias">
-        <div class="artist-card-body">
-          <div class="artist-title-row">
-            <span>
-              <strong>Leandro Dias</strong>
-              <small>Cantor, compositor e produtor</small>
-            </span>
-            <a class="follow-link" href="https://wa.me/5581993481128?text=Oi%20Leandro%2C%20acabei%20de%20ouvir%20Aquele%20gol%20que%20n%C3%A3o%20valeu%20no%20SpotiF%C3%AA.%20Que%20surpresa%20linda%2C%20topa%20sair%20comigo%3F" target="_blank" rel="noopener">Seguir</a>
-          </div>
-          <p>Leandro Dias comp&ocirc;s e produziu Aquele gol que n&atilde;o valeu. A m&uacute;sica nasceu de uma tarde no est&aacute;dio que parecia comum, mas ao lado de sua musa inspiradora virou uma mem&oacute;ria especial demais para ficar s&oacute; na lembran&ccedil;a.</p>
-        </div>
-      </section>
     </section>
 
     <button class="mini-player" type="button" data-open="player" aria-label="Abrir player">
       <img src="imagens/capa-musica.jpg?v=music-cover-2" alt="Capa da m&uacute;sica atual">
       <span class="mini-copy">
         <strong>Aquele gol que n&atilde;o valeu</strong>
-        <small>Leandro Dias</small>
+        <small>SpotiF&ecirc;</small>
       </span>
       <span class="mini-device" data-mini-device-indicator></span>
       <span class="mini-play" data-mini-toggle aria-hidden="true">
@@ -323,7 +303,7 @@
           <img src="imagens/capa-playlist.jpg?v=images-refresh-1" alt="Capa da playlist Minha melhor mem&oacute;ria">
           <span>
             <strong>Minha melhor mem&oacute;ria</strong>
-            <small>Aquele gol que n&atilde;o valeu &bull; Leandro Dias</small>
+            <small>Aquele gol que n&atilde;o valeu</small>
           </span>
         </div>
         <div class="share-tabs" aria-label="Tipo de compartilhamento">
@@ -394,7 +374,7 @@
     <audio id="audioPlayer" preload="metadata" src="musica/Aquele_gol_que_nao_valeu.mp3"></audio>
   </main>
 
-  <script src="script.js?v=minha-playlist-1"></script>
+  <script src="script.js?v=sem-autor-1"></script>
 </body>
 </html>
 
