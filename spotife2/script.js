@@ -23,7 +23,18 @@ const progressBar = document.getElementById("progressBar");
 const currentTime = document.getElementById("currentTime");
 const durationTime = document.getElementById("durationTime");
 const miniToggle = document.querySelector("[data-mini-toggle]");
-const spotifyPlay = document.querySelector(".spotify-play");
+const playlistToggleButtons = document.querySelectorAll("[data-playlist-toggle]");
+const visualFallback = document.getElementById("visualFallback");
+const songTitle = document.querySelector(".song-title-area h1");
+const songArtist = document.querySelector(".song-title-area p");
+const playerTopbarName = document.querySelector(".player-topbar span");
+const playerBackButton = document.querySelector(".player-topbar [data-open]");
+const recentRow = document.querySelector("[data-recent-track]");
+const RECENT_TRACK_KEY = "spotife2:ultima-musica";
+const miniCover = document.querySelector(".mini-player img");
+const miniTitle = document.querySelector(".mini-copy strong");
+const miniArtist = document.querySelector(".mini-copy small");
+const skipButtons = document.querySelectorAll("[data-skip]");
 const playbackModeButtons = document.querySelectorAll("[data-playback-mode-toggle]");
 const shareSheet = document.querySelector("[data-share-sheet]");
 const speedSheet = document.querySelector("[data-speed-sheet]");
@@ -143,14 +154,14 @@ function normalizePlaylistColor(color) {
   };
 }
 
-function applyPlaylistColor(color) {
+function applyPlaylistColor(color, target = app) {
   const accent = normalizePlaylistColor(color);
   const accentMid = shadeColor(accent, 0.58);
   const accentDark = shadeColor(accent, 0.32);
 
-  app.style.setProperty("--playlist-accent", rgbToCss(accent));
-  app.style.setProperty("--playlist-accent-mid", rgbToCss(accentMid));
-  app.style.setProperty("--playlist-accent-dark", rgbToCss(accentDark));
+  target.style.setProperty("--playlist-accent", rgbToCss(accent));
+  target.style.setProperty("--playlist-accent-mid", rgbToCss(accentMid));
+  target.style.setProperty("--playlist-accent-dark", rgbToCss(accentDark));
 }
 
 function applyCoverColor(color) {
@@ -214,12 +225,46 @@ const playlist = {
   cover: versionedImage("imagens/capa-playlist.jpg")
 };
 
-const song = {
-  title: "Aquele gol que n\u00e3o valeu",
-  artist: "Leandro Dias",
-  album: "Minha melhor mem\u00f3ria",
-  cover: versionedImage("imagens/capa-musica.jpg")
+function playlistTrack(number, title, artist) {
+  return {
+    title,
+    artist,
+    album: "Minha playlist",
+    cover: versionedImage(`capas/musica${number}.jpg`),
+    src: `musicas/musica${number}.mp3`,
+    hasVideo: false
+  };
+}
+
+const playlists = {
+  playlist: {
+    name: "Minha playlist",
+    cover: playlist.cover,
+    tracks: [
+      playlistTrack(1, "Mulher Feita", "PROJOTA"),
+      playlistTrack(2, "Baixinha", "CHININHA & L7NNON"),
+      playlistTrack(3, "Ela s\u00f3 quer Paz", "PROJOTA"),
+      playlistTrack(4, "Minha Vida", "Italo Melo ft. Junior Lord"),
+      playlistTrack(5, "Amor Livre", "Filipe Ret"),
+      playlistTrack(6, "C\u00f3pia Proibida", "L\u00e9o Foguete")
+    ]
+  }
 };
+
+let currentPlaylistKey = "playlist";
+let currentTrackIndex = 0;
+
+function currentPlaylist() {
+  return playlists[currentPlaylistKey];
+}
+
+function currentTrack() {
+  return currentPlaylist().tracks[currentTrackIndex];
+}
+
+function hasQueue() {
+  return currentPlaylist().tracks.length > 1;
+}
 
 function setActiveFilter(filter) {
   filterTabs.forEach((tab) => {
@@ -296,10 +341,213 @@ function markPlaylistStarted() {
 function syncPlayState(playing) {
   isPlaying = playing;
   mainPlay.classList.toggle("is-playing", playing);
-  spotifyPlay.classList.toggle("is-playing", playing);
   miniToggle.classList.toggle("is-playing", playing);
   mainPlay.setAttribute("aria-label", playing ? "Pausar m\u00fasica" : "Tocar m\u00fasica");
-  spotifyPlay.setAttribute("aria-label", playing ? "Pausar playlist" : "Tocar playlist");
+
+  playlistToggleButtons.forEach((button) => {
+    const playingThisPlaylist = playing && button.dataset.playlistToggle === currentPlaylistKey;
+    button.classList.toggle("is-playing", playingThisPlaylist);
+    button.setAttribute("aria-label", playingThisPlaylist ? "Pausar playlist" : "Tocar playlist");
+  });
+}
+
+function renderTrackList() {
+  document.querySelectorAll("[data-track-list]").forEach((list) => {
+    const playlistKey = list.dataset.trackList;
+
+    playlists[playlistKey].tracks.forEach((track, index) => {
+      const row = document.createElement("button");
+      row.className = "track-row";
+      row.type = "button";
+      row.dataset.trackIndex = index;
+      row.setAttribute("aria-label", `Tocar ${track.title}`);
+
+      const cover = document.createElement("img");
+      cover.src = track.cover;
+      cover.alt = `Capa da m\u00fasica ${track.title}`;
+
+      const copy = document.createElement("span");
+      const title = document.createElement("strong");
+      const artist = document.createElement("small");
+      title.textContent = track.title;
+      artist.textContent = track.artist;
+      copy.append(title, artist);
+
+      row.append(cover, copy);
+      row.insertAdjacentHTML("beforeend", `<svg class="row-more" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm7 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z"/></svg>`);
+      row.addEventListener("click", () => playTrack(playlistKey, index));
+      list.append(row);
+    });
+  });
+}
+
+function renderAllTracks() {
+  const list = document.querySelector("[data-all-tracks]");
+
+  Object.entries(playlists).forEach(([playlistKey, playlistInfo]) => {
+    playlistInfo.tracks.forEach((track, index) => {
+      const row = document.createElement("button");
+      row.className = "recent-row";
+      row.type = "button";
+
+      const cover = document.createElement("img");
+      cover.src = track.cover;
+      cover.alt = `Capa da música ${track.title}`;
+
+      const copy = document.createElement("span");
+      const title = document.createElement("strong");
+      const subtitle = document.createElement("small");
+      title.textContent = track.title;
+      subtitle.textContent = `${track.artist} • ${playlistInfo.name}`;
+      copy.append(title, subtitle);
+
+      row.append(cover, copy);
+      row.addEventListener("click", () => playTrack(playlistKey, index));
+      list.append(row);
+    });
+  });
+}
+
+let recentTrack = { playlistKey: "playlist", index: 0 };
+
+function loadRecentTrack() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(RECENT_TRACK_KEY));
+    if (saved && playlists[saved.playlistKey] && playlists[saved.playlistKey].tracks[saved.index]) {
+      recentTrack = { playlistKey: saved.playlistKey, index: saved.index };
+    }
+  } catch (error) {
+    // Sem memória salva: fica a música padrão.
+  }
+}
+
+function renderRecentTrack() {
+  const track = playlists[recentTrack.playlistKey].tracks[recentTrack.index];
+
+  recentRow.querySelector("img").src = track.cover;
+  recentRow.querySelector("strong").textContent = track.title;
+  recentRow.querySelector("small").textContent = track.artist;
+  recentRow.setAttribute("aria-label", `Tocar ${track.title}`);
+}
+
+function saveRecentTrack() {
+  recentTrack = { playlistKey: currentPlaylistKey, index: currentTrackIndex };
+  renderRecentTrack();
+
+  try {
+    localStorage.setItem(RECENT_TRACK_KEY, JSON.stringify(recentTrack));
+  } catch (error) {
+    // Navegador sem armazenamento: só vale até fechar a página.
+  }
+}
+
+function renderCurrentTrack() {
+  const track = currentTrack();
+  const playlistInfo = currentPlaylist();
+
+  songTitle.textContent = track.title;
+  songArtist.textContent = track.artist;
+  miniTitle.textContent = track.title;
+  miniArtist.textContent = track.artist;
+  miniCover.src = track.cover;
+  playerTopbarName.textContent = playlistInfo.name;
+  playerBackButton.dataset.open = currentPlaylistKey;
+  screens.player.setAttribute("aria-label", `Player ${track.title}`);
+
+  visualFallback.src = track.cover;
+  visualFallback.alt = `Visual da m\u00fasica ${track.title}`;
+  mediaWrap.classList.toggle("is-photo", !track.hasVideo);
+
+  if (!track.hasVideo) {
+    [visualLoop, visualLoopCopy].forEach((video) => {
+      if (video) {
+        video.pause();
+      }
+    });
+    showVisualFallback();
+  } else if (app.dataset.screen === "player") {
+    startVisualLoop();
+  }
+
+  skipButtons.forEach((button) => {
+    button.classList.toggle("is-disabled", !hasQueue());
+  });
+
+  document.querySelectorAll("[data-track-list]").forEach((list) => {
+    list.querySelectorAll(".track-row").forEach((row) => {
+      row.classList.toggle("is-current", list.dataset.trackList === currentPlaylistKey && Number(row.dataset.trackIndex) === currentTrackIndex);
+    });
+  });
+
+  extractCoverColor(track.cover, applyPlayerColor);
+  syncPlayState(isPlaying);
+}
+
+function loadTrack(playlistKey, index) {
+  const track = playlists[playlistKey].tracks[index];
+
+  if (track === currentTrack()) {
+    return;
+  }
+
+  currentPlaylistKey = playlistKey;
+  currentTrackIndex = index;
+  audio.src = track.src;
+  audio.playbackRate = playbackSpeed;
+  progressBar.value = 0;
+  currentTime.textContent = "0:00";
+  durationTime.textContent = "0:00";
+  setRangeProgress(0);
+  renderCurrentTrack();
+}
+
+function playTrack(playlistKey, index) {
+  loadTrack(playlistKey, index);
+  setScreen("player");
+  playSong();
+}
+
+function nextTrackIndex() {
+  const total = currentPlaylist().tracks.length;
+
+  if (playbackMode === "shuffle" && total > 1) {
+    let index;
+    do {
+      index = Math.floor(Math.random() * total);
+    } while (index === currentTrackIndex);
+    return index;
+  }
+
+  return (currentTrackIndex + 1) % total;
+}
+
+function nextTrack() {
+  if (!hasQueue()) {
+    return;
+  }
+
+  loadTrack(currentPlaylistKey, nextTrackIndex());
+  playSong();
+}
+
+function previousTrack() {
+  if (!hasQueue()) {
+    return;
+  }
+
+  if (audio.currentTime > 3) {
+    audio.currentTime = 0;
+    return;
+  }
+
+  const total = currentPlaylist().tracks.length;
+  loadTrack(currentPlaylistKey, (currentTrackIndex - 1 + total) % total);
+  playSong();
+}
+
+function firstTrackIndex(playlistKey) {
+  const total = playlists[playlistKey].tracks.length;
+  return playbackMode === "shuffle" && total > 1 ? Math.floor(Math.random() * total) : 0;
 }
 
 async function playSong() {
@@ -308,6 +556,7 @@ async function playSong() {
     markPlaylistStarted();
     syncPlayState(true);
     updateMediaSession();
+    saveRecentTrack();
   } catch (error) {
     syncPlayState(false);
   }
@@ -326,9 +575,14 @@ function toggleSong() {
   }
 }
 
-function handlePlaylistPlayButton() {
+function handlePlaylistPlayButton(playlistKey) {
   if (isPlaying) {
     pauseSong();
+    return;
+  }
+
+  if (!hasStartedPlaylist) {
+    playTrack(playlistKey, firstTrackIndex(playlistKey));
     return;
   }
 
@@ -372,13 +626,11 @@ function getShareUrl() {
 }
 
 function getShareData() {
-  const title = shareTarget === "music"
-    ? "Aquele gol que n\u00e3o valeu - SpotiF\u00ea"
-    : "Minha melhor mem\u00f3ria - SpotiF\u00ea";
+  const sharedName = shareTarget === "music" ? currentTrack().title : currentPlaylist().name;
 
   return {
-    title,
-    text: "Escutar Aquele gol que n\u00e3o valeu no SpotiF\u00ea.",
+    title: `${sharedName} - SpotiF\u00ea`,
+    text: `Escutar ${sharedName} no SpotiF\u00ea.`,
     url: getShareUrl()
   };
 }
@@ -442,6 +694,7 @@ function updateSpeedButtons() {
 
 function setPlaybackSpeed(speed) {
   playbackSpeed = speed;
+  audio.defaultPlaybackRate = speed;
   audio.playbackRate = speed;
   [visualLoop, visualLoopCopy].forEach((video) => {
     if (video) {
@@ -548,6 +801,10 @@ function showVisualFallback() {
 }
 
 function showVideoVisual() {
+  if (!currentTrack().hasVideo) {
+    return;
+  }
+
   mediaWrap.classList.remove("use-fallback");
 }
 
@@ -652,7 +909,7 @@ function startVisualLoopWatcher() {
 }
 
 async function startVisualLoop() {
-  if (!visualLoop) {
+  if (!visualLoop || !currentTrack().hasVideo) {
     return;
   }
 
@@ -667,9 +924,12 @@ async function startVisualLoop() {
   }
 }
 
-function openMusicPlayer() {
-  setScreen("player");
-  playSong();
+function setMediaSessionHandler(action, handler) {
+  try {
+    navigator.mediaSession.setActionHandler(action, handler);
+  } catch (error) {
+    // Navegador sem suporte a essa ação.
+  }
 }
 
 function updateMediaSession() {
@@ -677,17 +937,21 @@ function updateMediaSession() {
     return;
   }
 
+  const track = currentTrack();
+
   navigator.mediaSession.metadata = new MediaMetadata({
-    title: song.title,
-    artist: song.artist,
-    album: song.album,
+    title: track.title,
+    artist: track.artist,
+    album: track.album,
     artwork: [
-      { src: song.cover, sizes: "512x512", type: "image/jpeg" }
+      { src: track.cover, sizes: "512x512", type: "image/jpeg" }
     ]
   });
 
-  navigator.mediaSession.setActionHandler("play", playSong);
-  navigator.mediaSession.setActionHandler("pause", pauseSong);
+  setMediaSessionHandler("play", playSong);
+  setMediaSessionHandler("pause", pauseSong);
+  setMediaSessionHandler("previoustrack", hasQueue() ? previousTrack : null);
+  setMediaSessionHandler("nexttrack", hasQueue() ? nextTrack : null);
 }
 
 document.querySelectorAll("[data-open]").forEach((button) => {
@@ -697,7 +961,7 @@ document.querySelectorAll("[data-open]").forEach((button) => {
       return;
     }
 
-    if (button.dataset.open === "playlist") {
+    if (playlists[button.dataset.open]) {
       setActiveFilter("playlists");
     }
 
@@ -711,11 +975,19 @@ filterTabs.forEach((tab) => {
   });
 });
 
-document.querySelectorAll("[data-play-open]").forEach((button) => {
-  button.addEventListener("click", openMusicPlayer);
+recentRow.addEventListener("click", () => {
+  playTrack(recentTrack.playlistKey, recentTrack.index);
 });
 
-spotifyPlay.addEventListener("click", handlePlaylistPlayButton);
+playlistToggleButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    handlePlaylistPlayButton(button.dataset.playlistToggle);
+  });
+});
+
+skipButtons.forEach((button) => {
+  button.addEventListener("click", button.dataset.skip === "next" ? nextTrack : previousTrack);
+});
 
 playbackModeButtons.forEach((button) => {
   button.addEventListener("click", cyclePlaybackMode);
@@ -794,6 +1066,11 @@ audio.addEventListener("ended", () => {
     return;
   }
 
+  if (hasQueue()) {
+    nextTrack();
+    return;
+  }
+
   syncPlayState(false);
   audio.currentTime = 0;
   setRangeProgress(0);
@@ -808,11 +1085,15 @@ progressBar.addEventListener("input", () => {
 });
 
 setupSeamlessVisualLoop();
+renderTrackList();
+renderAllTracks();
+loadRecentTrack();
+renderRecentTrack();
 updatePlaybackModeButton();
 setShareTarget("link");
 setPlaybackSpeed(1);
 applyInitialRoute();
-extractCoverColor(song.cover, applyPlayerColor);
+renderCurrentTrack();
 extractCoverColor(playlist.cover, applyPlaylistColor);
 setRangeProgress(0);
 updateMediaSession();

@@ -1387,3 +1387,37 @@ input[type="range"]::-webkit-slider-thumb {
     gap: 10px;
   }
 }
+
+/* Minha playlist */
+.music-list {
+  display: grid;
+  gap: 8px;
+}
+
+.owner-avatar-brand {
+  background: transparent;
+  color: var(--spotify-green);
+}
+
+.owner-avatar-brand .brand-symbol {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
+}
+
+.track-list {
+  display: grid;
+  gap: 10px;
+}
+
+.track-list .track-row.is-current strong {
+  color: var(--spotify-green);
+}
+
+.player-media-wrap.is-photo {
+  background: rgba(0,0,0,.28);
+}
+
+.player-media-wrap.is-photo .fallback-media {
+  object-fit: contain;
+}
